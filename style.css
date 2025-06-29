@@ -9,11 +9,11 @@
     --secondary-bg: #121212;
     --card-bg: rgba(18, 18, 18, 0.8);
     --glass-bg: rgba(255, 255, 255, 0.05);
-    --accent-color: #FACC15; /* Yellow */
+    --accent-color: #fce96a; /* Yellow */
     --text-primary: #ffffff;
     --text-secondary: #a0a0a0;
     --border-color: rgba(255, 255, 255, 0.1);
-    --gradient: linear-gradient(135deg, #ffffff, #FACC15);
+    --gradient: linear-gradient(135deg, #ffffff, #fce96a);
 }
 
 body {
@@ -49,7 +49,7 @@ nav {
 .logo {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #FACC15;
+    color: #fce96a;
     text-decoration: none;
 }
 
@@ -105,9 +105,9 @@ nav {
 
 .hero-title {
     font-size: clamp(2.5rem, 8vw, 5rem);
-    font-weight: 700;
+    font-weight: 600;
     margin-bottom: 1rem;
-    background: linear-gradient(135deg, #FACC15);
+    background: linear-gradient(135deg, #fce96a);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -167,30 +167,14 @@ nav {
 
 /* About Section */
 .about-content {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 3rem;
-    align-items: center;
-}
-
-.about-image {
-    width: 300px;
-    height: 300px;
-    border-radius: 1rem;
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--border-color);
-    display: flex;
-    items-center;
-    justify-content: center;
-    font-size: 4rem;
-    color: var(--text-secondary);
+    display: block;
+    max-width: 900px;
+    margin: 20 auto;
 }
 
 .about-text {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    color: var(--text-secondary);
+    text-align: center;
+    font-size: 1.3rem
 }
 
 .about-text h3 {
@@ -299,7 +283,7 @@ nav {
 }
 
 .experience-description {
-    color: var(--text-secondary);
+    color: #e5e5e5;
     line-height: 1.6;
 }
 
@@ -426,7 +410,70 @@ footer {
         left: -2rem;
     }
 
+    .theme-toggle {
+        top: 1rem;
+        right: 1rem;
+    }
+
     nav {
         padding: 1rem;
     }
+}
+
+.education-content {
+    color: var(--text-secondary);
+    line-height: 1.8;
+    max-width: 200px;
+}
+
+.education-block h3 {
+    color: var(--text-primary);
+    font-size: 1.3rem;
+    margin-bottom: 0;
+}
+
+.education-block p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.certifications-block h3 {
+    color: var(--text-primary);
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+}
+
+.certifications-block ul {
+    list-style: disc inside;
+}
+
+.certifications-block li {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.section-title,
+nav .nav-links a,
+.hero-title,
+.about-text h3 {
+    color: var(--accent-color) !important;
+}
+
+.skill-card h3 {
+    color: var(--accent-color) !important;
+}
+
+.experience-title {
+    color: var(--accent-color) !important;
+}
+
+.nav-links a:hover {
+    color: var(--accent-color);
+}
+
+.certifications-block li,
+.education-block h3,
+.experience-title,
+.skill-card h3 {
+    color: var(--text-primary) !important; /* white */
 }
