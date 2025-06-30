@@ -13,6 +13,23 @@
             box-sizing: border-box;
         }
 
+body {
+  cursor: none !important; /* Force-hides the default cursor */
+}
+			  .custom-cursor {
+			  position: fixed;
+			  top: 0;
+			  left: 0;
+			  width: 0;
+			  height: 0;
+			  border-left: 9px solid transparent;
+			  border-right: 9px solid transparent;
+			  border-bottom: 20px solid yellow;
+			  pointer-events: none;
+			  transform: translate(-50%, -50%) rotate(-20deg);
+			  z-index: 9999;
+			}
+			
 		:root {
 			--primary-bg: #0a0a0a;
 			--secondary-bg: #121212;
@@ -525,7 +542,8 @@ nav .nav-links a,
             </div>
         </div>
     </section>
-
+    <!-- Mouse cursor -->
+ <div class="custom-cursor"></div>
     <!-- About Section -->
   <!-- About Section -->
 <section id="about" class="section">
@@ -798,6 +816,25 @@ reducing deployment time by 40% and improving system reliability by 60%, speed u
                 this.style.transform = 'translateY(0) scale(1)';
             });
         });
+		
+		// Custom cursor movement
+document.addEventListener('mousemove', (e) => {
+  const cursor = document.querySelector('.custom-cursor');
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+});
+
+// Optional: Change cursor on hoverable elements
+document.querySelectorAll('a, button, .skill-card').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    document.querySelector('.custom-cursor').style.transform = 
+      'translate(-50%, -50%) rotate(-15deg) scale(1.5)';
+  });
+  el.addEventListener('mouseleave', () => {
+    document.querySelector('.custom-cursor').style.transform = 
+      'translate(-50%, -50%) rotate(-15deg) scale(1)';
+  });
+});
     </script>
 </body>
 </html>
