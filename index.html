@@ -506,10 +506,20 @@ nav .nav-links a,
   color: var(--text-primary) !important; /* white */
 }
 
+#bgVideo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1;
+  object-fit: cover;
+  opacity: 0.3;
+}
     </style>
 </head>
 <body>
-	<video autoplay muted loop playsinline id="bgVideo">
+  <video autoplay muted loop playsinline id="bgVideo">
   <source src="bg.mp4" type="video/mp4">
 </video>
     <!-- Theme Toggle -->
@@ -844,6 +854,3 @@ document.querySelectorAll('a, button, .skill-card').forEach(el => {
     </script>
 </body>
 </html>
-
-
-
