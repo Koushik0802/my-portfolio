@@ -662,29 +662,23 @@ reducing deployment time by 40% and improving system reliability by 60%, speed u
     </div>
     <div class="experience-description">
         <ul>
-			 <li><strong>CI/CD & Automation:</strong> Designed and maintained robust CI/CD pipelines using Jenkins and GitHub Actions to automate end-to-end
-			software delivery—from Git source to production. Integrated SonarQube for static code analysis and vulnerability detection, and worked
-			with Maven and MSBuild as build tools.</li>
-			 <li><strong>GitOps & Kubernetes Deployments: </strong>Implemented GitOps using Argo CD, managing and versioning Kubernetes manifests for
-			consistent, auditable deployments. Deployed applications into Kubernetes clusters via Argo CD controller ensuring scalability and high
-			availability.</li>
-			 <li><strong>Progressive Delivery:</strong> Integrated Argo Rollouts to enable Canary and blue-green deployments across UAT and staging
-			environments, ensuring controlled releases with zero downtime.</li></li>
-			 <li><strong>Image Lifecycle Management:</strong> Automated image updates in manifests using Argo CD Image Updater, pulling the latest versions
-			from Amazon ECR seamlessly into production.</li>
-			 <li><strong>Security & Image Hardening:</strong> Incorporated AI-driven Trivy for intelligent vulnerability prioritization and scanning of Docker
-			images, Implemented Trivy for vulnerability scanning of both standard and Distroless Docker images, enhancing container security
-			before pushing images to ECR.</li>
-			 <li><strong>Production-Grade Dockerization: </strong>Built secure, lightweight Distroless Docker images for production workloads, significantly
-			reducing image size and minimizing attack surfaces.</li></li>
-			 <li><strong>AWS Infrastructure Automation:</strong> Provisioned and managed AWS services such as EC2, Auto Scaling Groups, ECR, VPC, and
-			CloudWatch using Terraform, ensuring repeatable and scalable infrastructure deployment and enabled notifications when drift
-			detected in infrastructure.</li>
-			 <li><strong>Monitoring & Observability:</strong> Deployed Prometheus and Grafana to monitor Kubernetes clusters at the pod and node levels.
-			Configured CloudWatch metrics for EC2 (CPU and memory) and automated alerting.
-			 <li><strong>Event-Driven Automation:</strong> Used serverless architecture Lambda functions to trigger automation workflows event-driven
-			infrastructure events for S3 file uploads, bucket creation, email transaction post payment and Auto-shutdown unused EC2/RDS instances
-			after hours.</li>
+<li>Designed Jenkins & GitHub Actions pipelines with SonarQube and Maven/MSBuild integration.</li>
+<li> Streamlined K8s deployments using Argo CD with canary/blue-green strategies via Argo Rollouts.</li>
+<li> Automated image updates from ECR using Argo CD Image Updater; built secure Distroless images.</li>
+<li> Strengthened security by scanning Docker images with Trivy, building Distroless images, and integrating
+with CI pipelines.</li>
+<li> Automated Kubernetes deployments using Argo CD with progressive delivery (canary/blue-green) via
+Argo Rollouts.</li>
+<li> Implemented Prometheus/Grafana for K8s and CloudWatch for EC2 with custom alerting.</li>
+<li> Built serverless workflows with AWS Lambda for cost-saving automation (S3 triggers, shutdown scripts,
+alerts via SNS/SES).</li>
+<li> Provisioned cloud infrastructure (EC2, ASG, VPC, ECR) using Terraform with drift detection.</li>
+<li> Reduced deployment time by 40% and manual errors by 70% through CI/CD optimization and
+PowerShell automation on VMs.</li>
+<li> Boosted reliability by 60% through auto-scaling and proactive monitoring across environments</li>
+<li> Modernized legacy systems with DevOps workflows for consistent, scalable multi-environment
+deployments.</li>
+<li> Migrated legacy apps to modern DevOps workflows, enabling scalable, consistent multi-environments.</li>
         </ul>
     </div>
 </div>
