@@ -49,6 +49,9 @@
             --text-secondary: #a0a0a0;
             --border-color: rgba(255, 255, 255, 0.1);
             --gradient: linear-gradient(135deg, #ffffff, #FFFF8F);
+            --heading-color: #0A192F; /* Navy color for headings */
+            --section-bg-light: rgba(255, 255, 255, 0.03);
+            --section-bg-dark: rgba(10, 10, 10, 0.9);
         }
 
         /* Enhanced Background Effects */
@@ -77,29 +80,22 @@
             50% { transform: translateY(-20px) translateX(10px); opacity: 0.8; }
         }
 
-        /* Enhanced Navigation */
+        /* Sticky Navigation */
         nav {
-            position: fixed;
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
             background: rgba(10, 10, 10, 0.9);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-color);
             padding: 1rem 2rem;
             z-index: 999;
             transition: all 0.3s ease;
-            transform: translateY(0);
         }
 
         nav.scrolled {
             background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(30px);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        nav.hidden {
-            transform: translateY(-100%);
         }
 
         .nav-container {
@@ -139,10 +135,12 @@
             border-radius: 1rem;
         }
 
-        .nav-links a:hover {
+        .nav-links a:hover,
+        .nav-links a:focus {
             color: var(--accent-color);
             background: rgba(255, 255, 143, 0.1);
             transform: translateY(-2px);
+            outline: none;
         }
 
         .nav-links a::after {
@@ -159,6 +157,14 @@
 
         .nav-links a:hover::after {
             width: 80%;
+        }
+
+        /* Section Separators */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+            margin: 2rem auto;
+            max-width: 1200px;
         }
 
         /* Enhanced Hero Section */
@@ -223,6 +229,15 @@
             animation: slideInUp 1s ease-out 0.5s forwards;
         }
 
+        .hero-tagline {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            opacity: 0;
+            animation: slideInUp 1s ease-out 0.8s forwards;
+        }
+
         .hero-location {
             color: var(--text-secondary);
             font-size: 1rem;
@@ -272,20 +287,29 @@
             transition: all 0.5s;
         }
 
-        .cta-button:hover::before {
+        .cta-button:hover::before,
+        .cta-button:focus::before {
             left: 100%;
         }
 
-        .cta-button:hover {
+        .cta-button:hover,
+        .cta-button:focus {
             background: rgba(255, 255, 143, 0.1);
             transform: translateY(-3px);
             box-shadow: 0 15px 40px rgba(255, 255, 143, 0.2);
             border-color: var(--accent-color);
+            outline: none;
+        }
+
+        .primary-cta {
+            background: rgba(255, 255, 143, 0.2);
+            border-color: var(--accent-color);
+            font-weight: 600;
         }
 
         /* Enhanced Sections */
         .section {
-            padding: 5rem 2rem;
+            padding: 6rem 2rem;
             max-width: 1200px;
             margin: 0 auto;
             opacity: 0;
@@ -296,6 +320,11 @@
         .section.visible {
             opacity: 1;
             transform: translateY(0);
+        }
+
+        /* Alternate section backgrounds */
+        .section:nth-child(even) {
+            background: var(--section-bg-light);
         }
 
         .section-title {
@@ -492,7 +521,7 @@
         /* Enhanced Footer */
         footer {
             background: var(--secondary-bg);
-            padding: 2rem;
+            padding: 3rem 2rem;
             text-align: center;
             border-top: 1px solid var(--border-color);
             position: relative;
@@ -513,7 +542,7 @@
             display: flex;
             justify-content: center;
             gap: 1rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .social-links a {
@@ -546,14 +575,17 @@
             transform: translate(-50%, -50%);
         }
 
-        .social-links a:hover::before {
+        .social-links a:hover::before,
+        .social-links a:focus::before {
             width: 100%;
             height: 100%;
         }
 
-        .social-links a:hover {
+        .social-links a:hover,
+        .social-links a:focus {
             transform: translateY(-5px) scale(1.1);
             color: var(--primary-bg);
+            outline: none;
         }
 
         /* Enhanced About Section */
@@ -688,6 +720,10 @@
             .experience-item::before {
                 left: -2rem;
             }
+
+            .section {
+                padding: 4rem 1.5rem;
+            }
         }
 
         /* Backdrop filter support */
@@ -697,6 +733,29 @@
             .contact-card {
                 background: rgba(18, 18, 18, 0.9);
             }
+        }
+
+        /* Accessibility improvements */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Focus styles for keyboard navigation */
+        a:focus,
+        button:focus,
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: 2px solid var(--accent-color);
+            outline-offset: 2px;
         }
     </style>
 </head>
@@ -733,8 +792,8 @@
     <section class="hero">
         <div class="hero-content">
             <h1 class="hero-title">Hi, I'm Koushik!</h1>
-            <p class="hero-subtitle"><b>DevOps Engineer</b></p>
-	    <p class="hero-subtitle"><b>AWS, CI/CD, Kubernetes, Terraform, DevSecOps</b></p>
+            <p class="hero-subtitle">DevOps Engineer</p>
+            <p class="hero-tagline">Specializing in cloud infrastructure automation, CI/CD pipelines, and secure containerized deployments to optimize system reliability and performance.</p>
             <p class="hero-location">
                 <i class="fas fa-map-marker-alt"></i>
                 Visakhapatnam, Andhrapradesh, India
@@ -742,8 +801,7 @@
             <div>
                 <a href="#contact" class="cta-button">Get In Touch</a>
                 <a href="#about" class="cta-button">About Me</a>
-                <a href="Koushik_Gurrala_AWS DevOps_Resume_2025.pdf" download class="cta-button">Download Resume</a>
-                <a href="Koushik_Gurrala_AWS DevOps_Resume_2025.pdf" target="_blank" class="cta-button">View Resume</a>
+                <a href="Koushik_Gurrala_AWS DevOps_Resume_2025.pdf" download class="cta-button primary-cta">Download Resume</a>
             </div>
         </div>
     </section>
@@ -763,6 +821,8 @@
             </div>
         </div>
     </section>
+
+    <div class="section-divider"></div>
 
     <!-- Skills Section -->
     <section id="skills" class="section">
@@ -827,13 +887,15 @@
         </div>
     </section>
 
+    <div class="section-divider"></div>
+
     <!-- Experience Section -->
-      <section id="experience" class="section">
+    <section id="experience" class="section">
         <h2 class="section-title"><i class="fas fa-briefcase"></i>&nbsp;Professional Experience</h2>
         <div class="experience-timeline">
             <div class="experience-item">
                 <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                    <img src="wipro-logo.png" alt="Wipro Logo" style="width: 100px; height: auto; border-radius: 0.5rem;">
+                    <img src="wipro-logo.png" alt="Wipro Technologies Logo" style="width: 100px; height: auto; border-radius: 0.5rem;">
                     <div>
                         <h3 class="experience-title"> DevOps Engineer</h3>
                         <p class="experience-company">Wipro Technologies | Gallagher Solutions Inc.</p>
@@ -882,10 +944,10 @@
 
                 </div>
             </div>
-
-            
         </div>
     </section>
+
+    <div class="section-divider"></div>
 
     <!-- Education Section -->
     <section id="education" class="section">
@@ -902,6 +964,8 @@
         </div>
     </section>
 
+    <div class="section-divider"></div>
+
     <!-- Certifications Section -->
     <section id="certifications" class="section">
         <h2 class="section-title"><i class="fas fa-award"></i> Certifications</h2>
@@ -913,10 +977,12 @@
             <div class="skill-card">
                 <h3>Be10x AI Tools Workshop</h3>
                 <p>AI Automation tool Expert (2025)</p>
-				<a href="Certificate.pdf" target="_blank" class="cta-button">View Certficate</a>
+                <a href="Certificate.pdf" target="_blank" class="cta-button">View Certficate</a>
             </div>
         </div>
     </section>
+
+    <div class="section-divider"></div>
 
     <!-- Contact Section -->
     <section id="contact" class="section">
@@ -928,7 +994,7 @@
                 </div>
                 <h3>Email</h3>
                 <p>Ready to discuss infrastructure automation, cloud platforms, or innovative software solutions?</p>
-                <a href="mailto:koushikgurrala79@gmail.com" class="cta-button">Send Email</a>
+                <a href="mailto:koushikgurrala79@gmail.com" class="cta-button primary-cta">Send Email</a>
             </div>
             <div class="contact-card">
                 <div class="contact-icon">
@@ -936,14 +1002,14 @@
                 </div>
                 <h3>LinkedIn</h3>
                 <p>Connect with me for professional networking and career opportunities</p>
-                <a href="https://www.linkedin.com/in/koushik-gurrala-896986360/" target="_blank" class="cta-button">Connect on LinkedIn</a>
+                <a href="https://www.linkedin.com/in/koushik-gurrala-896986360/" target="_blank" class="cta-button primary-cta">Connect on LinkedIn</a>
             </div>
             <div class="contact-card">
                 <div class="contact-icon">
                     <i class="fas fa-phone"></i>
                 </div>
                 <h3>Mobile</h3>
-                <p>+917207076532</p>
+                <p><a href="tel:+917207076532" style="color: inherit; text-decoration: none;">+917207076532</a></p>
             </div>
         </div>
     </section>
@@ -1087,6 +1153,17 @@
 
         // Initialize particles
         createParticles();
+
+        // Add keyboard navigation support
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                document.body.classList.add('keyboard-navigation');
+            }
+        });
+
+        document.addEventListener('mousedown', function() {
+            document.body.classList.remove('keyboard-navigation');
+        });
     </script>
 </body>
 </html>
