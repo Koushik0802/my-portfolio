@@ -792,8 +792,8 @@
     <section class="hero">
         <div class="hero-content">
             <h1 class="hero-title">Hi, I'm Koushik!</h1>
-            <p class="hero-subtitle">DevOps Engineer</p>
-            <p class="hero-tagline">Specializing in cloud infrastructure automation, CI/CD pipelines, and secure containerized deployments to optimize system reliability and performance.</p>
+            <p class="hero-subtitle" id="typewriter"><Strong>DevOps Engineer</Strong></p>
+            <p class="hero-tagline">Specializing in CI/CD pipelines, and secure containerized deployments to optimize system reliability and performance.</p>
             <p class="hero-location">
                 <i class="fas fa-map-marker-alt"></i>
                 Visakhapatnam, Andhrapradesh, India
@@ -814,9 +814,8 @@
                 <p>
                     AWS DevOps Engineer with 3.8 years of hands-on experience in cloud infrastructure automation, CI/CD pipeline development, and secure
                     containerized deployments. Expert in <strong>CI/CD (Jenkins, GitHub Actions, Argo CD)</strong>, <strong>containerization (Docker, Kubernetes)</strong>, and IaC with
-                    <strong>Terraform</strong>. Adept at leveraging AI-driven tools for vulnerability detection, cost optimization, Reduced deployment errors by 70% and infrastructure
-                    costs by 30% via automation and containerization and predictive <strong>monitoring (Prometheus, Grafana)</strong>. Proven ability to enhance system reliability,
-                    reducing deployment time by 40% and improving system reliability by 60%, speed up deployments, and secure production environments at scale. Currently pursuing M.Tech in Software Systems from BITS Pilani while working with cutting-edge technologies.
+                    <strong>Terraform</strong>. Adept at leveraging AI-driven tools for vulnerability detection, cost optimization, Reduced deployment errors by 70% and containerization and predictive <strong>monitoring (Prometheus, Grafana)</strong>. Proven ability to enhance system reliability,
+                    reducing deployment time and improving system reliability speed up deployments, and secure production environments at scale. Currently pursuing M.Tech in Software Systems from BITS Pilani while working with cutting-edge technologies.
                 </p>
             </div>
         </div>
@@ -1164,6 +1163,40 @@
         document.addEventListener('mousedown', function() {
             document.body.classList.remove('keyboard-navigation');
         });
+
+const roles = ["DevOps Engineer", "Site Reliability Engineer ", "Build&Release Engineer", "Cloud Engineer"];
+  const typewriter = document.getElementById("typewriter");
+
+  let roleIndex = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+
+  function typeLoop() {
+    const currentRole = roles[roleIndex];
+    const displayedText = isDeleting 
+      ? currentRole.substring(0, charIndex--) 
+      : currentRole.substring(0, charIndex++);
+
+    typewriter.textContent = displayedText;
+
+    let typingSpeed = isDeleting ? 50 : 100;
+
+    if (!isDeleting && charIndex === currentRole.length) {
+      // Pause before deleting
+      typingSpeed = 1500;
+      isDeleting = true;
+    } else if (isDeleting && charIndex === 0) {
+      // Move to next word
+      isDeleting = false;
+      roleIndex = (roleIndex + 1) % roles.length; // Loop back to start
+      typingSpeed = 800;
+    }
+
+    setTimeout(typeLoop, typingSpeed);
+  }
+
+  window.addEventListener("DOMContentLoaded", typeLoop);
+
     </script>
 </body>
 </html>
