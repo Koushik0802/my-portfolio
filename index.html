@@ -901,40 +901,35 @@
                     </div>
                 </div>
                 <div class="experience-description">
+<p>🔧 <strong>CI/CD Automation & Workflow Orchestration</strong></p>
+<p>Implemented end-to-end CI/CD pipeline automation using <strong>n8n</strong>, integrating with <strong>GitHub</strong>, <strong>Jenkins</strong>, <strong>ArgoCD</strong>, <strong>Microsoft Teams</strong>, and <strong>Outlook</strong> to orchestrate streamlined DevOps workflows.</p>
+<p>Configured real-time feedback loops via Microsoft Teams and Outlook alerts on code commits, build status, and deployments using n8n, significantly improving team responsiveness.</p>
+<p>Designed and maintained Jenkins pipelines integrated with Git Repos, SonarQube, and Maven/MSBuild for seamless automation and rigorous code quality checks.</p>
+<p>Reduced deployment time by <strong>40%</strong> and manual errors by <strong>70%</strong> through optimized CI/CD workflows and PowerShell-based VM automation.</p>
+<div style="margin-top: 30px;"></div>
 
-<p>🔧<strong> CI/CD Pipeline Engineering</strong></p>
-<p>Built and maintained robust build and release pipelines using Jenkins and Azure DevOps, enabling faster and more reliable software delivery.</p>
-<p>Integrated tools like SonarQube for code quality analysis and orchestrated builds with Maven and MSBuild to ensure smooth versioning and modular deployments.</p>
-<p>I transitioned traditional VM-based agents to Docker-based builds, creating lightweight, reproducible environments that improved pipeline consistency and simplified scaling across multiple services.</p>
+<p>🐳 <strong>Containerization & Secure Image Management</strong></p>
+<p>Replaced traditional build agents with Docker containers to achieve consistency, scalability, and isolation across all CI/CD environments.</p>
+<p>Introduced and standardized <strong>Distroless Docker images</strong> in production, enhancing container security, reducing image bloat, and minimizing attack surfaces.</p>
+<p>Integrated <strong>Trivy</strong> scanning into CI pipelines to detect and remediate vulnerabilities in Docker images, improving production security posture.</p>
+<p>Automated Docker image updates from <strong>Elastic Container Registry (ECR)</strong> using <strong>Argo CD Image Updater</strong>, accelerating deployment velocity and reducing manual steps.</p>
 <div style="margin-top: 30px;"></div>
-<p>🛡️ <strong>Secure Containerization Practices</strong></p>
-<p>Focused heavily on container hardening for production.</p>
-<p>Introduced minimal base containers (Distroless) to enhance security by eliminating unnecessary OS layers.</p>
-<p>Replaced conventional Docker images with these optimized variants to reduce vulnerabilities and align with DevSecOps best practices.</p>
-<p>Container scanning was automated using Trivy, ensuring that any image built in the pipeline was verified for known threats before moving downstream.</p>
+
+<p>🚀 <strong>Kubernetes & GitOps Delivery</strong></p>
+<p>Implemented progressive delivery strategies such as <strong>canary</strong> and <strong>blue-green deployments</strong> using <strong>Argo Rollouts</strong> on <strong>AWS Elastic Kubernetes Service (EKS)</strong> to improve release reliability with minimal downtime.</p>
+<p>Modernized legacy DevOps pipelines by transitioning to <strong>GitOps practices</strong> in collaboration with development teams, enabling scalable, multi-environment deployments through <strong>Argo CD</strong>.</p>
 <div style="margin-top: 30px;"></div>
-<p>🚀 <strong>GitOps & Kubernetes Automation</strong></p>
-<p>Leveraged Argo CD to streamline Kubernetes deployments using declarative manifests.</p>
-<p>Rolled out automated image promotions from ACR using Argo CD Image Updater, reducing manual configuration changes.</p>
-<p>Enabled progressive deployment strategies—such as blue-green and canary rollouts—to increase release confidence while minimizing downtime and rollback risk.</p>
+
+<p>📈 <strong>Monitoring, Observability & Infrastructure</strong></p>
+<p>Deployed centralized logging and monitoring for Kubernetes clusters using <strong>Prometheus</strong>, <strong>Grafana</strong>, and the <strong>EFK stack</strong> for real-time visibility and proactive incident management.</p>
+<p>Improved system reliability by <strong>60%</strong> through auto-scaling and proactive monitoring across multi-cloud environments.</p>
 <div style="margin-top: 30px;"></div>
-<p>📊 <strong>Monitoring & Observability</strong></p>
-<p>Designed and configured observability stacks with Prometheus, Grafana, and EFK (Elasticsearch, Fluentd, Kibana) to monitor containerized applications and virtual machines.</p>
-<p>Set up actionable alerts to detect anomalies early and reduce MTTR (Mean Time to Recovery).</p>
+
+<p>☁️ <strong>Infrastructure as Code & Cloud Automation</strong></p>
+<p>Provisioned and managed infrastructure on <strong>AWS</strong> (EC2, Auto Scaling Groups, VPCs, ECR) using <strong>Terraform</strong>, with drift detection to ensure auditability and consistency.</p>
+<p>Built event-driven, serverless workflows using <strong>AWS Lambda</strong> to automate tasks like blob triggers, VM shutdowns, and custom alerts via <strong>Service Bus</strong>, resulting in significant operational cost savings.</p>
 <div style="margin-top: 30px;"></div>
-<p>☁️ <strong>Infrastructure Automation</strong></p>
-<p>Provisioned and managed scalable cloud infrastructure on Azure, including compute, networking, and registries, using Terraform.</p>
-<p>Implemented drift detection and infrastructure versioning, ensuring state consistency across environments.</p>
-<p>To reduce operational overhead, I automated recurring infrastructure tasks using PowerShell scripts, cutting down manual efforts and deployment bottlenecks.</p>
-<div style="margin-top: 30px;"></div>
-<p>⚙️ <strong>Serverless Automation</strong></p>
-<p>Built event-driven workflows using Azure Functions, such as auto-shutdown for VMs, blob-triggered processes, and alert handling via Azure Service Bus.</p>
-<p>These serverless setups contributed to cost savings and improved system efficiency.</p>
-<div style="margin-top: 30px;"></div>
-<p>📈 <strong>System Optimization & Modernization</strong></p>
-<p>Reengineered legacy workflows to fit into modern DevOps frameworks, introducing automation, modular pipelines, and multi-environment deployment support.</p>
-<p>Collaborated across teams to transition monolithic processes into agile, microservice-ready systems, significantly improving release cycles and team velocity.</p>
-<div style="margin-top: 30px;"></div>
+
 <p><strong>🎯 Key Wins</strong></p>
 <p>Deployment duration reduced by 40% with automated rollout strategies.</p>
 <p>Manual configuration tasks cut by 70% using container-based CI/CD and scripting.</p>
