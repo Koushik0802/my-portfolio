@@ -24,6 +24,75 @@
             line-height: 1.6;
         }
 
+        /* Netflix-style Intro */
+        .intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: all 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .intro-content {
+            text-align: center;
+        }
+
+        .intro-name {
+  font-family: 'Anton', sans-serif;
+  font-size: 6rem;
+  color: #FFFF8F;
+  text-align: center;
+  text-shadow: 0 0 20px rgba(255, 255, 143, 0.6);
+  cursor: pointer;
+  transition: transform 1s ease, opacity 1s ease;
+        }
+
+        @keyframes flicker {
+            0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+                opacity: 1;
+                text-shadow: 
+                    0 0 10px rgba(255, 255, 143, 0.7),
+                    0 0 20px rgba(255, 255, 143, 0.5),
+                    0 0 30px rgba(255, 255, 143, 0.3);
+            }
+            20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+                opacity: 0.8;
+                text-shadow: none;
+            }
+        }
+
+        .intro-name:hover {
+            transform: scale(1.05);
+        }
+
+        .intro-subtext {
+            margin-top: 2rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2rem;
+            letter-spacing: 0.2rem;
+            text-transform: uppercase;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Hide intro after animation */
+        .intro-hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+
+
         .custom-cursor {
             position: fixed;
             top: 0;
@@ -213,6 +282,12 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: titleGlow 2s ease-in-out infinite alternate;
+			z-index: 100;
+			display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* Space between text and emoji */
+  text-rendering: optimizeLegibility;
         }
 
         @keyframes titleGlow {
@@ -230,8 +305,8 @@
         }
 
         .hero-tagline {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
+            font-size: 1.5rem;
+            color: #FFFF8F
             max-width: 700px;
             margin: 0 auto 2rem;
             opacity: 0;
@@ -757,9 +832,41 @@
             outline: 2px solid var(--accent-color);
             outline-offset: 2px;
         }
+
+
+.wave {
+  font-size: 2rem;
+  color: #FFFF8F;
+  text-shadow: 
+  filter: drop-shadow(0 0 15px rgba(255, 255, 143, 0.9));
+  display: inline-block;
+  transform-origin: 75% 75%;
+  line-height: 1;
+  animation: wave-animation 1.5s infinite;
+}
+
+@keyframes wave-animation {
+  0% { transform: rotate(0deg); }
+  15% { transform: rotate(14deg); }
+  30% { transform: rotate(-8deg); }
+  45% { transform: rotate(14deg); }
+  60% { transform: rotate(-4deg); }
+  75% { transform: rotate(10deg); }
+  100% { transform: rotate(0deg); }
+}
+
     </style>
 </head>
 <body>
+
+  <!-- Netflix-style Intro Overlay -->
+    <div class="intro-overlay" id="introOverlay">
+        <div class="intro-content">
+		<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+            <div class="intro-name" id="introName">KOUSHIK GURRALA</div>
+            <div class="intro-subtext">Click to enter portfolio</div>
+        </div>
+    </div>
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loader"></div>
@@ -791,9 +898,11 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <h1 class="hero-title">Hi, I'm Koushik!</h1>
+			<h1>
+			<span style="font-size: 84px; color:#FFFF8F">Hi, I'm Koushik!<span class="wave" aria-label="waving hand" style="font-size: 84px">👋</span> </span>
+			</h1>
             <p class="hero-subtitle" id="typewriter"><Strong>DevOps Engineer</Strong></p>
-            <p class="hero-tagline">Specializing in CI/CD pipelines, and secure containerized deployments to optimize system reliability and performance.</p>
+            <p class="hero-tagline"><b>Welcome to my portfolio! Scroll down to explore an interactive DevOps journey</b></p>
             <p class="hero-location">
                 <i class="fas fa-map-marker-alt"></i>
                 Visakhapatnam, Andhrapradesh, India
@@ -812,10 +921,13 @@
         <div class="about-content">
             <div class="about-text">
                 <p>
-                    AWS DevOps Engineer with 3.8 years of hands-on experience in cloud infrastructure automation, CI/CD pipeline development, and secure
-                    containerized deployments. Expert in <strong>CI/CD (Jenkins, GitHub Actions, Argo CD)</strong>, <strong>containerization (Docker, Kubernetes)</strong>, and IaC with
-                    <strong>Terraform</strong>. Adept at leveraging AI-driven tools for vulnerability detection, cost optimization, Reduced deployment errors by 70% and containerization and predictive <strong>monitoring (Prometheus, Grafana)</strong>. Proven ability to enhance system reliability,
-                    reducing deployment time and improving system reliability speed up deployments, and secure production environments at scale. Currently pursuing M.Tech in Software Systems from BITS Pilani while working with cutting-edge technologies.
+                    With 3.8+ years of experience in delivering seamless DevOps solutions on AWS, I specialize in CI/CD automation, container orchestration, and infrastructure as code using tools like Jenkins, GitHub Actions, Argo CD, and Terraform.
+
+I’ve reduced deployment errors by 70% and accelerated release cycles through intelligent automation and robust pipeline design. My focus is on building scalable, secure, and cost-efficient cloud environments — powered by AI-driven monitoring and predictive analytics using Prometheus and Grafana.</p>
+
+<p>Currently pursuing an M.Tech at BITS Pilani, I bring a mindset of continuous improvement, system reliability, and forward-thinking engineering to every project.</p>
+
+<p><Strong>Scroll down and explore how next-gen DevOps can transform your cloud journey.</strong></p>
                 </p>
             </div>
         </div>
@@ -1159,7 +1271,7 @@
             document.body.classList.remove('keyboard-navigation');
         });
 
-const roles = ["DevOps Engineer", "Site Reliability Engineer ", "Build&Release Engineer", "Cloud Engineer"];
+const roles = ["DevOps Engineer  ", "Site Reliability Engineer  ", "Build&Release Engineer  ", "Cloud Engineer  "];
   const typewriter = document.getElementById("typewriter");
 
   let roleIndex = 0;
@@ -1178,19 +1290,64 @@ const roles = ["DevOps Engineer", "Site Reliability Engineer ", "Build&Release E
 
     if (!isDeleting && charIndex === currentRole.length) {
       // Pause before deleting
-      typingSpeed = 1500;
+      typingSpeed = 1800;
       isDeleting = true;
     } else if (isDeleting && charIndex === 0) {
       // Move to next word
       isDeleting = false;
       roleIndex = (roleIndex + 1) % roles.length; // Loop back to start
-      typingSpeed = 800;
+      typingSpeed = 700;
     }
 
     setTimeout(typeLoop, typingSpeed);
   }
 
   window.addEventListener("DOMContentLoaded", typeLoop);
+// Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random positioning
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = Math.random() * 100 + 'vh';
+                
+                // Random animation delay
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                
+                // Random size
+                const size = Math.random() * 3 + 1;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+		introName.addEventListener('click', () => {
+    const heroSection = document.querySelector('.hero');
+
+    // Animate intro zoom-out
+    introOverlay.style.transform = 'scale(5)';
+    introOverlay.style.opacity = '0';
+
+    // Hide overlay + scroll after 1.5s
+    setTimeout(() => {
+        introOverlay.classList.add('intro-hidden');
+
+        // Scroll to hero section
+        if (heroSection) {
+            heroSection.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    }, 1000);
+});
+
 
     </script>
 </body>
