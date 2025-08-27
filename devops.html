@@ -6,7 +6,6 @@
     <title>Koushik Gurrala | DevOps & SRE Engineer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- (All CSS here, as in your message) -->
     <style>
         :root {
             --ios-blue: #007AFF;
@@ -978,6 +977,52 @@
             background: var(--ios-gray-5);
         }
 
+        /* Skill Icons Grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 20px;
+            margin: 40px 0 10px 0;
+            justify-items: center;
+            align-items: center;
+        }
+        
+        .tool-logo {
+            width: 100px;
+            height: 100px;
+            background: var(--ios-gray);
+            border-radius: 16px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            transition: var(--transition);
+            box-shadow: var(--shadow-light);
+            border: 1px solid var(--ios-gray-2);
+        }
+        
+        .tool-logo:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: var(--shadow-heavy);
+            border-color: var(--ios-blue);
+        }
+        
+        .tool-logo img {
+            width: 38px;
+            height: 38px;
+            object-fit: contain;
+        }
+        
+        .tool-name {
+            font-size: 12px;
+            color: var(--ios-gray-6);
+            margin-top: 8px;
+            text-align: center;
+            font-weight: 500;
+        }
+
         /* Responsive Design */
         @media (max-width: 992px) {
             .contact-content {
@@ -989,6 +1034,10 @@
                 right: -20%;
                 width: 400px;
                 height: 400px;
+            }
+            
+            .tools-grid {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
             }
         }
 
@@ -1022,6 +1071,11 @@
             section {
                 padding: 60px 0;
             }
+            
+            .tools-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 15px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1039,6 +1093,26 @@
             
             .section-header h2 {
                 font-size: 32px;
+            }
+            
+            .tools-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
+            }
+            
+            .tool-logo {
+                width: 60px;
+                height: 60px;
+                padding: 8px;
+            }
+            
+            .tool-logo img {
+                width: 32px;
+                height: 32px;
+            }
+            
+            .tool-name {
+                font-size: 10px;
             }
         }
 
@@ -1082,12 +1156,50 @@
                 background-position: 0% 50%;
             }
         }
-		html, body, * {
-    background: #fff !important;
-    color: #000 !important;
-    filter: none !important;
-    -webkit-filter: none !important;
+
+.custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-bottom: 20px solid #000000;
+    pointer-events: none;
+    transform: translate(-50%, -50%) rotate(-20deg);
+    z-index: 9999;
+    transition: all 0.1s ease;
 }
+
+
+/* Hide default cursor */
+
+
+/* Show custom cursor */
+.custom-cursor {
+    /* Your existing styles */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+body.loaded .custom-cursor {
+    opacity: 1;
+}
+
+/* Different cursor states for interactive elements */
+a, button, .ios-btn {
+    cursor: none;
+}
+
+a:hover ~ .custom-cursor,
+button:hover ~ .custom-cursor,
+.ios-btn:hover ~ .custom-cursor {
+    transform: translate(-50%, -50%) rotate(-20deg) scale(1.5);
+    border-bottom-color: var(--ios-blue);
+}
+
+
     </style>
 </head>
 <body>
@@ -1137,13 +1249,12 @@
         <div class="container">
             <div class="section-header">
                 <h2>About Me</h2>
-                <p>First of all if you are reading this I just want to thank you for checking out my site, 
-				it really means the world to me! My name is <strong>Koushik</strong> and I am a <strong>DevOps & Site Reliability Engineer</strong> currently residing in Visakhapatnam, Andhrapradesh.</p>
+                <p>I'm a DevOps & Site Reliability Engineer with a strong background in automation, cloud platforms, CI/CD, and infrastructure as code.</p>
             </div>
             <div class="about-card fade-in">
                 <div class="about-text">
                     <p>
-With 3.5+ years of experience in delivering seamless DevOps solutions on AWS, I specialize in CI/CD automation, container orchestration, and infrastructure as code using tools like Jenkins, GitHub Actions, Argo CD, and Terraform.
+With 3.8+ years of experience in delivering seamless DevOps solutions on AWS, I specialize in CI/CD automation, container orchestration, and infrastructure as code using tools like Jenkins, GitHub Actions, Argo CD, and Terraform.
 I’ve reduced deployment errors by 70% and accelerated release cycles through intelligent automation and robust pipeline design. My focus is on building scalable, secure, and cost-efficient cloud environments — powered by AI-driven monitoring and predictive analytics using Prometheus and Grafana.</p>
 <p>Currently pursuing an M.Tech at BITS Pilani, I bring a mindset of continuous improvement, system reliability, and forward-thinking engineering to every project.
 </p>
@@ -1155,33 +1266,92 @@ I’ve reduced deployment errors by 70% and accelerated release cycles through i
                         Let's innovate together!
                     </p>
                 </div>
-            </div>
-            <div class="skills-section fade-in">
-                <h3>Skills & Tools</h3>
-                <div class="skills">
-                    <span class="skill">AWS</span>
-                    <span class="skill">Azure</span>
-					<span class="skill">CI/CD</span>
-					<span class="skill">Jenkins</span>
-					<span class="skill">GitHub Actions</span>
-                    <span class="skill">Kubernetes</span>
-                    <span class="skill">Container Orchestration</span>
-					<span class="skill">GitOps</span>
-					<span class="skill">Argo CD</span>
-                    <span class="skill">Terraform</span>
-                    <span class="skill">Helm</span>
-                    <span class="skill">Prometheus</span>
-                    <span class="skill">Grafana</span>
-					<span class="skill">EFK Stack</span>
-					<span class="skill">Monitoring & Logging</span>
-                    <span class="skill">Linux</span>
-                    <span class="skill">Python</span>
-                    <span class="skill">Shell Scripting</span>
-				   <span class="skill">Deployment Strategies</span>
-                    <span class="skill">WorkFlow Automation</span>
-					<span class="skill">DevSecOps Practices</span>
-					<span class="skill">Ansible</span>
+                
+                <!-- Skill Icons Grid -->
+                <h3 align="center" style="margin-top: 60px; margin-bottom: 25px; color: var(--ios-blue);">Skills & Tools</h3>
+                <div class="tools-grid">
+                    <div class="tool-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="AWS">
+                        <div class="tool-name">AWS</div>
+                    </div>
+                    <div class="tool-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg" alt="Azure">
+                        <div class="tool-name">Azure</div>
+                    </div>
+					<div class="tool-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git">
+                        <div class="tool-name">Git</div>
+                    </div>
+					<div class="tool-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg" alt="Jenkins">
+                        <div class="tool-name">Jenkins</div>
+                    </div>
+					<div class="tool-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub Actions">
+                        <div class="tool-name">GitHub Actions</div>
+                    </div>
+                    <div class="tool-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg" alt="Kubernetes">
+                        <div class="tool-name">Kubernetes</div>
+                    </div>
+                    <div class="tool-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker">
+                        <div class="tool-name">Docker</div>
+                    </div>
+                    <div class="tool-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/argocd/argocd-original.svg" alt="ArgoCD" onerror="this.style.display='none'">
+                        <div class="tool-name">ArgoCD</div>
+                    </div>
+                    <div class="tool-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/terraform/terraform-original.svg" alt="Terraform">
+                        <div class="tool-name">Terraform</div>
+                    </div>
+                    <div class="tool-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prometheus/prometheus-original.svg" alt="Prometheus">
+                        <div class="tool-name">Prometheus</div>
+                    </div>
+                    <div class="tool-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/grafana/grafana-original.svg" alt="Grafana">
+                        <div class="tool-name">Grafana</div>
+                    </div>
+                    <div class="tool-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/elasticsearch/elasticsearch-original.svg" alt="Elasticsearch">
+                        <div class="tool-name">Elasticsearch</div>
+                    </div>
+					   <div class="tool-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/elastic-kibana.svg" alt="Kibana">
+                        <div class="tool-name">Kibana</div>
+                    </div>
+					<div class="tool-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sonarqube/sonarqube-original.svg" alt="SonarQube" onerror="this.style.display='none'">
+                        <div class="tool-name">SonarQube</div>
+                    </div>
+						<div class="tool-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/trivy.png" alt="Trivy">
+                        <div class="tool-name">Trivy</div>
+                    </div>					
+					<div class="tool-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" alt="Linux">
+                        <div class="tool-name">Linux</div>
+                    </div>
+                    <div class="tool-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg" alt="Shell Scripting">
+                        <div class="tool-name">Shell Scripting</div>
+                    </div>
+					<div class="tool-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python">
+                        <div class="tool-name">Python</div>
+                    </div>
+					<div class="tool-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ansible/ansible-original.svg" alt="Ansible">
+                        <div class="tool-name">Ansible</div>
+                    </div>
+						<div class="tool-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/n8n.svg" alt="n8n">
+                        <div class="tool-name">n8n</div>
+                    </div>
                 </div>
+
             </div>
         </div>
     </section>
@@ -1452,7 +1622,13 @@ I’ve reduced deployment errors by 70% and accelerated release cycles through i
         });
     });
 	
-	
+	// Loading overlay
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        document.getElementById('loadingOverlay').classList.add('hidden');
+        document.body.classList.add('loaded'); // Add loaded class
+    }, 700);
+});
     </script>
 </body>
 </html>
