@@ -5,78 +5,77 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Koushik Gurrala</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: black;
-      height: 109vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    height: 120vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
 
-    .netflix-text {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 5vw;
-      color: #e50914;
-      letter-spacing: 3px;
-      text-shadow: 0 0 10px rgba(229, 9, 20, 0.9);
-      cursor: pointer;
-    }
+  .netflix-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5vw;
+    color: #e50914;
+    letter-spacing: 3px;
+    cursor: pointer;
+  }
 
-    .netflix-container {
-      display: flex;
-      gap: 0.4vw;
-      transform: scale(1.3);
-    }
+  .netflix-container {
+    display: flex;
+    gap: 0.4vw;
+    transform: scale(1.3);
+  }
 
-    .letter {
-      font-family: 'Bebas Neue', sans-serif;
-      color: #e50914;
-      text-shadow: 0 0 10px rgba(229, 9, 20, 0.8);
-      transform: translateY(-20%);
-    }
-	
-    .letter:nth-child(1) { font-size: 5.6vw; }
-    .letter:nth-child(2) { font-size: 5.27vw; }
-    .letter:nth-child(3) { font-size: 5.28vw; }
-    .letter:nth-child(4) { font-size: 5.2vw; }
-    .letter:nth-child(5) { font-size: 5.1vw; }
-    .letter:nth-child(6) { font-size: 5.1vw; }
-    .letter:nth-child(7) { font-size: 5.0vw; }
-    .letter:nth-child(8) { font-size: 5.0vw; }
-    .letter:nth-child(9) { font-size: 5.0vw; }
-    .letter:nth-child(10) { font-size: 5.1vw; }
-    .letter:nth-child(11) { font-size: 5.1vw; }
-    .letter:nth-child(12) { font-size: 5.4vw; }
-    .letter:nth-child(13) { font-size: 5.6vw; }
-    .letter:nth-child(14) { font-size: 5.8vw; }
+  .letter {
+    font-family: 'Bebas Neue', sans-serif;
+    color: #e50914;
+    transform: translateY(-20%);
+  }
 
-    .netflix-container.animate .letter {
-      animation: zoomFade 3s ease forwards;
-    }
+  .letter:nth-child(1) { font-size: 5.6vw; }
+  .letter:nth-child(2) { font-size: 5.27vw; }
+  .letter:nth-child(3) { font-size: 5.28vw; }
+  .letter:nth-child(4) { font-size: 5.1vw; }
+  .letter:nth-child(5) { font-size: 5.1vw; }
+  .letter:nth-child(6) { font-size: 5.1vw; }
+  .letter:nth-child(7) { font-size: 5.0vw; }
+  .letter:nth-child(8) { font-size: 5.0vw; }
+  .letter:nth-child(9) { font-size: 5.0vw; }
+  .letter:nth-child(10) { font-size: 5.1vw; }
+  .letter:nth-child(11) { font-size: 5.1vw; }
+  .letter:nth-child(12) { font-size: 5.4vw; }
+  .letter:nth-child(13) { font-size: 5.6vw; }
+  .letter:nth-child(14) { font-size: 5.8vw; }
 
-    .animate {
-      animation: zoomFade 3s ease forwards;
-    }
+  .netflix-container.animate .letter {
+    animation: zoomFade 3s ease forwards;
+  }
 
-    @keyframes zoomFade {
-      0% {
-        transform: scale(0.3);
-        opacity: 0;
-      }
-      50% {
-        transform: scale(1.3);
-        opacity: 1;
-      }
-      100% {
-        transform: scale(2);
-        opacity: 0;
-      }
+  .animate {
+    animation: zoomFade 3s ease forwards;
+  }
+
+  @keyframes zoomFade {
+    0% {
+      transform: scale(0.6);
+      opacity: 0;
     }
+    50% {
+      transform: scale(0.8);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.8);
+      opacity: 0;
+    }
+  }
+
   </style>
 </head>
 <body>
@@ -118,7 +117,7 @@
 
       // Redirect after animation ends
       setTimeout(() => {
-        window.location.href = "main.html";
+        window.location.href = "index.html";
       }, 3000);
     });
   </script>
