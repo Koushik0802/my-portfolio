@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Koushik Gurrala | DevOps & SRE Engineer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --ios-blue: #007AFF;
@@ -55,15 +55,16 @@
 
         body {
             font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, var(--ios-gray-1) 0%, var(--ios-white) 100%);
+            background: #f0f4ff;
             color: var(--ios-black);
             line-height: 1.6;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-		
-		body::before {
+
+        /* ── FIXED BACKGROUND BLOBS (needed for blur to work) ── */
+        body::before {
             content: '';
             position: fixed;
             inset: 0;
@@ -77,8 +78,7 @@
                 radial-gradient(ellipse 50% 45% at 90% 75%,  rgba(0,122,255,0.12)  0%, transparent 70%),
                 #f0f4ff;
         }
-		body > * { position: relative; z-index: 1; }
-
+        body > * { position: relative; z-index: 1; }
 
         .container {
             max-width: 1200px;
@@ -86,7 +86,95 @@
             padding: 0 20px;
         }
 
-        /* Loading Animation - iPhone Style */
+        /* ══════════════════════════════════════════════
+           TRUE GLASSMORPHISM SYSTEM
+           Cards are semi-transparent by default so the
+           coloured background blobs show through and 
+           backdrop-filter actually blurs something visible.
+        ══════════════════════════════════════════════ */
+
+        /* BASE: all cards are frosted glass at rest */
+        .about-card,
+        .experience-card,
+        .highlight-card,
+        .ios-card,
+        .contact-item,
+        .contact-form {
+            background: rgba(255,255,255,0.55) !important;
+            border: 1px solid rgba(255,255,255,0.75) !important;
+            backdrop-filter: blur(10px) saturate(160%);
+            -webkit-backdrop-filter: blur(10px) saturate(160%);
+            box-shadow:
+                0 4px 24px rgba(0,100,255,0.07),
+                0 1px 4px rgba(0,0,0,0.06),
+                inset 0 1px 0 rgba(255,255,255,0.85) !important;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+            position: relative !important;
+            overflow: hidden !important;
+        }
+
+        /* TOP SHEEN LINE — always visible, the "frosted" glint */
+        .about-card::after,
+        .experience-card::after,
+        .highlight-card::after,
+        .ios-card::after,
+        .contact-item::after,
+        .contact-form::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 52%;
+            border-radius: inherit;
+            background: linear-gradient(
+                180deg,
+                rgba(255,255,255,0.55) 0%,
+                rgba(255,255,255,0.0)  100%
+            );
+            pointer-events: none;
+            z-index: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        /* Keep card children above the sheen */
+        .about-card > *,
+        .experience-card > *,
+        .highlight-card > *,
+        .ios-card > *,
+        .contact-item > *,
+        .contact-form > * { position: relative; z-index: 1; }
+
+        /* HOVER: deeper blur, stronger glow, lift */
+        .about-card:hover,
+        .experience-card:hover,
+        .highlight-card:hover,
+        .ios-card:hover,
+        .contact-item:hover,
+        .contact-form:hover {
+            backdrop-filter: blur(28px) saturate(200%) brightness(1.04) !important;
+            -webkit-backdrop-filter: blur(28px) saturate(200%) brightness(1.04) !important;
+            background: rgba(255,255,255,0.72) !important;
+            border: 1px solid rgba(0,122,255,0.35) !important;
+            box-shadow:
+                0 12px 40px rgba(0,122,255,0.18),
+                0 4px 12px rgba(0,0,0,0.08),
+                inset 0 1.5px 0 rgba(255,255,255,1),
+                inset 0 -1px 0 rgba(0,122,255,0.12) !important;
+            transform: translateY(-8px) scale(1.02) !important;
+        }
+
+        /* Skill pill glass */
+        .skill {
+            transition: all 0.3s cubic-bezier(0.25,0.46,0.45,0.94) !important;
+        }
+        .skill:hover {
+            box-shadow:
+                0 6px 24px rgba(0,122,255,0.4),
+                inset 0 1px 0 rgba(255,255,255,0.35) !important;
+            transform: translateY(-4px) scale(1.06) !important;
+        }
+
+
+
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -264,7 +352,7 @@
             padding-top: 80px;
             position: relative;
             overflow: hidden;
-            background: linear-gradient(135deg, var(--ios-white) 0%, var(--ios-gray-1) 50%, var(--ios-white) 100%);
+            background: transparent;
         }
 
         .hero::before {
@@ -391,7 +479,7 @@
 
         /* About Section - iPhone Card Style */
         .about {
-            background: var(--ios-white);
+            background: transparent;
         }
 
         .about-card {
@@ -405,9 +493,7 @@
         }
 
         .about-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: var(--shadow-heavy);
-            border-color: rgba(0, 122, 255, 0.3);
+            /* handled by glass system above */
         }
 
         .about-text p {
@@ -500,7 +586,7 @@
 
         /* Experience Section - iOS Timeline */
         .experience {
-            background: linear-gradient(135deg, var(--ios-gray-1) 0%, var(--ios-white) 100%);
+            background: transparent;
         }
 
         .experience-card {
@@ -533,9 +619,7 @@
         }
 
         .experience-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: var(--shadow-heavy);
-            border-color: rgba(0, 122, 255, 0.3);
+            /* handled by glass system above */
         }
 
         .company-name {
@@ -597,7 +681,7 @@
 
         /* Impact Highlights - iOS Grid */
         .highlights {
-            background: var(--ios-white);
+            background: transparent;
         }
 
         .highlights-grid {
@@ -637,8 +721,7 @@
         }
 
         .highlight-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: var(--shadow-heavy);
+            /* handled by glass system above */
         }
 
         .highlight-title {
@@ -660,7 +743,7 @@
 
         /* Education & Certifications - iOS Cards */
         .education, .certifications {
-            background: linear-gradient(135deg, var(--ios-gray-1) 0%, var(--ios-white) 100%);
+            background: transparent;
         }
 
         .cards-grid {
@@ -698,9 +781,7 @@
         }
 
         .ios-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: var(--shadow-heavy);
-            border-color: rgba(0, 122, 255, 0.3);
+            /* handled by glass system above */
         }
 
         .card-title {
@@ -752,7 +833,7 @@
 
         /* Contact Section - iPhone Style */
         .contact {
-            background: var(--ios-white);
+            background: transparent;
         }
 
         .contact-content {
@@ -781,9 +862,7 @@
         }
 
         .contact-item:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: var(--shadow-medium);
-            border-color: rgba(0, 122, 255, 0.3);
+            /* handled by glass system above */
         }
 
         .contact-icon {
@@ -847,7 +926,7 @@
             border: 1px solid var(--ios-gray-3);
             border-radius: var(--border-radius);
             color: var(--ios-black);
-            font-family: 'SF Pro Display', sans-serif;
+            font-family: 'Poppins', sans-serif;
             font-size: 16px;
             transition: var(--transition);
         }
@@ -1605,7 +1684,7 @@ I’ve reduced deployment errors by 70% and accelerated release cycles through i
                 <a href="koushikgurrala79@gmail.com" class="social-link" title="Email"><i class="fa fa-envelope"></i></a>
             </div>
             <div class="copyright">
-                &copy; 2024 Koushik Gurrala. All rights reserved.
+                &copy; 2025 Koushik Gurrala. All rights reserved.
             </div>
         </div>
     </footer>
