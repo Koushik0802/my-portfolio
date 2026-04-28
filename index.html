@@ -1015,6 +1015,102 @@
                 transition-duration: 0.01ms !important;
             }
         }
+		
+		/* Grid system for the new section */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 24px;
+}
+
+/* FAQ Card styles – inherits glassmorphism from .ios-card */
+.faq-item {
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(10px) saturate(160%);
+    border: 1px solid rgba(255,255,255,0.75);
+    border-radius: var(--border-radius-xl);
+    margin-bottom: 20px;
+    overflow: hidden;
+    transition: all 0.4s var(--ease-cinematic);
+    box-shadow: var(--shadow-light);
+}
+
+.faq-item:hover {
+    transform: translateY(-4px);
+    background: rgba(255,255,255,0.72);
+    border-color: rgba(0,122,255,0.35);
+    box-shadow: 0 12px 28px rgba(0,122,255,0.15);
+}
+
+.faq-question {
+    padding: 24px 28px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--ios-black);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,255,255,0.3);
+    transition: background 0.2s;
+}
+
+.faq-question i {
+    transition: transform 0.35s var(--ease-cinematic);
+    color: var(--ios-blue);
+}
+
+.faq-item.active .faq-question i {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    max-height: 0;
+    padding: 0 28px;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.33, 1, 0.68, 1), padding 0.3s ease;
+    color: var(--ios-black-6);
+    line-height: 1.5;
+    background: rgba(255,255,255,0.2);
+    border-top: 0px solid transparent;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 200px;  /* enough for content */
+    padding: 20px 28px 24px;
+    border-top-width: 1px;
+    border-top-color: rgba(0,122,255,0.2);
+}
+
+.reveal-up, .reveal-scale {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.9s var(--ease-cinematic), transform 0.9s var(--ease-cinematic);
+}
+
+.reveal-scale {
+    transform: scale(0.95);
+}
+
+.reveal-up.revealed, .reveal-scale.revealed {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .grid {
+        gap: 16px;
+    }
+    .faq-question {
+        padding: 18px 20px;
+        font-size: 1rem;
+    }
+    .faq-answer {
+        font-size: 0.9rem;
+    }
+}
+
     </style>
 </head>
 <body>
@@ -1245,6 +1341,31 @@
         </div>
     </section>
 
+<section class="section">
+    <div class="container">
+        <div class="grid">
+            <div class="reveal-up" style="grid-column: span 15; text-align: center;">
+                <h2 class="section-header reveal">Why work with me?</h2>
+                <div class="section-subhead">Reliability, security, and a collaborative approach.</div>
+            </div>
+            <div style="grid-column: span 12; max-width: 800px; margin: 0 auto;">
+                <div class="faq-item reveal-scale">
+                    <div class="faq-question">How do you ensure zero‑downtime deployments? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Argo Rollouts with Canary & Blue‑Green strategies on EKS, plus automated rollback based on Prometheus metrics.</div>
+                </div>
+                <div class="faq-item reveal-scale">
+                    <div class="faq-question">What’s your security philosophy? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Least‑privilege IAM, Distroless containers, Trivy in CI, and continuous compliance as code.</div>
+                </div>
+                <div class="faq-item reveal-scale">
+                    <div class="faq-question">Can you reduce cloud waste? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Yes — I saved $2k/month by automating non‑prod shutdowns, right‑sizing, and spot strategies.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
     <!-- Contact Section -->
     <section class="contact" id="contact">
         <div class="container">
@@ -1328,11 +1449,6 @@
         </div>
     </footer>
 
-    <!-- ═══════════════════════════════════════════
-         PREMIUM MOTION ENGINE
-         Intersection Observer + CSS transitions
-         GPU-friendly · 60fps · No scroll hijacking
-    ═══════════════════════════════════════════ -->
     <script>
     /* ─── 1. LOADING OVERLAY ─────────────────────────── */
     window.addEventListener('load', function () {
@@ -1639,6 +1755,29 @@
         }, { threshold: 0.06 });
         obs.observe(expCard);
     })();
+	// FAQ Toggle functionality
+document.querySelectorAll('.faq-question').forEach(question => {
+    question.addEventListener('click', () => {
+        const faqItem = question.closest('.faq-item');
+        if (faqItem) {
+            faqItem.classList.toggle('active');
+        }
+    });
+});
+
+// Extend scroll reveal to .reveal-up and .reveal-scale
+const extraReveal = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            extraReveal.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal-up, .reveal-scale').forEach(el => {
+    extraReveal.observe(el);
+});
     </script>
 </body>
 </html>
