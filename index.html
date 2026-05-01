@@ -198,25 +198,71 @@
             transform: scale(1.04);
             pointer-events: none;
         }
-        .apple-loader {
-            width: 50px;
-            height: 50px;
-            border: 3px solid var(--ios-gray-3);
-            border-top: 3px solid var(--ios-blue);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-        .loading-text {
-            color: var(--ios-gray-6);
-            font-weight: 500;
-            font-size: 16px;
-        }
-        @keyframes spin {
-            0%   { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+.spinner-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+.bounce-loader {
+    width: 48px;
+    height: 48px;
+    margin: auto;
+    position: relative;
+}
+.bounce-loader:before {
+    content: '';
+    width: 48px;
+    height: 5px;
+    background: #f0808050;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    border-radius: 50%;
+    animation: shadow324 0.5s linear infinite;
+}
+.bounce-loader:after {
+    content: '';
+    width: 100%;
+    height: 100%;
+    background: #f08080;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 4px;
+    animation: jump7456 0.5s linear infinite;
+}
+@keyframes jump7456 {
+    15% { border-bottom-right-radius: 3px; }
+    25% { transform: translateY(9px) rotate(22.5deg); }
+    50% {
+        transform: translateY(18px) scale(1, .9) rotate(45deg);
+        border-bottom-right-radius: 40px;
+    }
+    75% { transform: translateY(9px) rotate(67.5deg); }
+    100% { transform: translateY(0) rotate(90deg); }
+}
+@keyframes shadow324 {
+    0%, 100% { transform: scale(1, 1); }
+    50%       { transform: scale(1.2, 1); }
+}
+.spinner-text {
+    font-size: 18px;
+    font-weight: 800;
+    color: #f08080;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    margin-top: 20px;
+}
 
+@keyframes rotate_3922 {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
         /* ═══════════════════════════════════════════
            HEADER / NAVBAR
         ═══════════════════════════════════════════ */
@@ -973,7 +1019,7 @@
             transition: opacity 0.3s ease;
         }
         body.loaded .custom-cursor { opacity: 1; }
-        a, button, .ios-btn { cursor: none; }
+        a, button, .ios-btn { cursor: pointer; }
         a:hover ~ .custom-cursor,
         button:hover ~ .custom-cursor,
         .ios-btn:hover ~ .custom-cursor {
@@ -1015,111 +1061,481 @@
                 transition-duration: 0.01ms !important;
             }
         }
+
+        /* ═══════════════════════════════════════════
+           HIRE ME BUTTON
+        ═══════════════════════════════════════════ */
+        .hire-me-btn {
+            display: inline-block;
+            padding: 17px 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            border: 0;
+            background-color: var(--ios-blue);
+            color: white;
+            box-shadow: rgb(0 0 0 / 5%) 0 0 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.5s ease;
+        }
+        .hire-me-btn:hover {
+            letter-spacing: 3px;
+            background-color: hsl(261deg 80% 48%);
+            color: hsl(0, 0%, 100%);
+            box-shadow: rgb(93 24 220) 0px 7px 29px 0px;
+        }
+        .hire-me-btn:active {
+            letter-spacing: 3px;
+            background-color: hsl(261deg 80% 48%);
+            color: hsl(0, 0%, 100%);
+            box-shadow: rgb(93 24 220) 0px 0px 0px 0px;
+            transform: translateY(10px);
+            transition: 100ms;
+        }
+
+        /* ═══════════════════════════════════════════
+           DOWNLOAD TOGGLE BUTTON (hero)
+        ═══════════════════════════════════════════ */
+        .dl-container {
+            display: inline-flex;
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+            justify-content: center;
+            align-items: center;
+            vertical-align: middle;
+        }
+        .label {
+            background-color: var(--ios-blue);
+            border: 2px solid rgb(91, 91, 240);
+            display: flex;
+            align-items: center;
+            border-radius: 50px;
+            width: 220px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            padding: 5px;
+            position: relative;
+        }
+        .label::before {
+            content: "";
+            position: absolute;
+            top: 0; bottom: 0; left: 0; right: 0;
+            background-color: #fff;
+            width: 8px; height: 8px;
+            transition: all 0.4s ease;
+            border-radius: 100%;
+            margin: auto;
+            opacity: 0;
+            visibility: hidden;
+        }
+        .label .input { display: none; }
+        .label .title {
+            font-size: 17px;
+            color: White;
+            transition: all 0.4s ease;
+            position: absolute;
+            right: 18px;
+            bottom: 14px;
+            text-align: center;
+        }
+        .label .title:last-child { opacity: 0; visibility: hidden; }
+        .label .circle {
+            height: 45px; width: 45px;
+            border-radius: 50%;
+            background-color: rgb(91, 91, 240);
+            display: flex; justify-content: center; align-items: center;
+            transition: all 0.4s ease;
+            position: relative;
+            box-shadow: 0 0 0 0 rgb(255, 255, 255);
+            overflow: hidden;
+        }
+        .label .circle .icon {
+            color: #fff;
+            width: 30px;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.4s ease;
+        }
+        .label .circle .square {
+            aspect-ratio: 1;
+            width: 15px;
+            border-radius: 2px;
+            background-color: #fff;
+            opacity: 0; visibility: hidden;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.4s ease;
+        }
+        .label .circle::before {
+            content: "";
+            position: absolute;
+            left: 0; top: 0;
+            background-color: #3333a8;
+            width: 100%; height: 0;
+            transition: all 0.4s ease;
+        }
+        .label:has(.input:checked) {
+            width: 57px;
+            animation: dl-installed 0.4s ease 3.5s forwards;
+        }
+        .label:has(.input:checked)::before {
+            animation: dl-rotate 3s ease-in-out 0.4s forwards;
+        }
+        .label .input:checked + .circle {
+            animation: dl-pulse 1s forwards, dl-circleDelete 0.2s ease 3.5s forwards;
+            rotate: 180deg;
+        }
+        .label .input:checked + .circle::before {
+            animation: dl-installing 3s ease-in-out forwards;
+        }
+        .label .input:checked + .circle .icon { opacity: 0; visibility: hidden; }
+        .label .input:checked ~ .circle .square { opacity: 1; visibility: visible; }
+        .label .input:checked ~ .title { opacity: 0; visibility: hidden; }
+        .label .input:checked ~ .title:last-child {
+            animation: dl-showMsg 0.4s ease 3.5s forwards;
+        }
+        @keyframes dl-pulse {
+            0%   { scale: 0.95; box-shadow: 0 0 0 0 rgba(255,255,255,0.7); }
+            70%  { scale: 1;    box-shadow: 0 0 0 16px rgba(255,255,255,0); }
+            100% { scale: 0.95; box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+        }
+        @keyframes dl-installing { from { height: 0; } to { height: 100%; } }
+        @keyframes dl-rotate {
+            0%   { transform: rotate(-90deg) translate(27px) rotate(0); opacity:1; visibility:visible; }
+            99%  { transform: rotate(270deg) translate(27px) rotate(270deg); opacity:1; visibility:visible; }
+            100% { opacity:0; visibility:hidden; }
+        }
+        @keyframes dl-installed { 100% { width: 150px; border-color: rgb(35,174,35); } }
+        @keyframes dl-circleDelete { 100% { opacity:0; visibility:hidden; } }
+        @keyframes dl-showMsg { 100% { opacity:1; visibility:visible; right:56px; } }
+
+        /* ═══════════════════════════════════════════
+           DARK MODE TOGGLE (nav top-right)
+        ═══════════════════════════════════════════ */
+        .toggle-cont {
+            --primary: #007AFF;
+            --light: #d9d9d9;
+            --dark: #121212;
+            --gray: #414344;
+            position: relative;
+            z-index: 10;
+            width: fit-content;
+            height: 38px;
+            border-radius: 9999px;
+            flex-shrink: 0;
+        }
+        .toggle-cont .toggle-input { display: none; }
+        .toggle-cont .toggle-label {
+            --gap: 4px;
+            --width: 38px;
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+            padding: 0.35rem;
+            width: calc((var(--width) + var(--gap)) * 2);
+            height: 100%;
+            background-color: var(--dark);
+            border: 1px solid #777777;
+            border-bottom: 0;
+            border-radius: 9999px;
+            box-sizing: content-box;
+            transition: all 0.3s ease-in-out;
+        }
+        .toggle-label::before {
+            content: "";
+            position: absolute;
+            z-index: -10;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: calc(100% + 1rem);
+            height: calc(100% + 1rem);
+            background-color: var(--gray);
+            border: 1px solid #777777;
+            border-bottom: 0;
+            border-radius: 9999px;
+            transition: all 0.3s ease-in-out;
+        }
+        .toggle-label::after {
+            content: "";
+            position: absolute;
+            z-index: -10;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%; height: 100%;
+            background-image: radial-gradient(circle at 50% -100%, rgb(0,122,255) 0%, rgba(12,12,12,1) 80%);
+            border-radius: 9999px;
+        }
+        .toggle-cont .toggle-label .cont-icon {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: var(--width);
+            height: 34px;
+            background-image: radial-gradient(circle at 50% 0%, #666666 0%, var(--gray) 100%);
+            border: 1px solid #aaaaaa;
+            border-bottom: 0;
+            border-radius: 9999px;
+            box-shadow: inset 0 -0.15rem 0.15rem var(--primary);
+            transition: transform 0.3s ease-in-out;
+            overflow: clip;
+        }
+        .cont-icon .sparkle {
+            position: absolute;
+            top: 50%; left: 50%;
+            display: block;
+            width: calc(var(--width) * 1px);
+            aspect-ratio: 1;
+            background-color: var(--light);
+            border-radius: 50%;
+            transform-origin: 50% 50%;
+            rotate: calc(1deg * var(--deg));
+            transform: translate(-50%, -50%);
+            animation: dm-sparkle calc(100s / var(--duration)) linear calc(0s / var(--duration)) infinite;
+        }
+        @keyframes dm-sparkle {
+            to { width: calc(var(--width) * 0.5px); transform: translate(2000%, -50%); }
+        }
+        .cont-icon .icon {
+            width: 1rem;
+            fill: var(--light);
+            stroke: var(--light);
+            stroke-width: 1.5;
+        }
+        /* Checked (dark mode ON) */
+        .toggle-cont:has(.toggle-input:checked) .toggle-label {
+            background-color: transparent;
+            border: 1px solid #3d6970;
+            border-bottom: 0;
+        }
+        .toggle-cont:has(.toggle-input:checked) .toggle-label::before {
+            box-shadow: 0 1rem 2.5rem -2rem #0080ff;
+        }
+        .toggle-cont:has(.toggle-input:checked) .toggle-label .cont-icon {
+            overflow: visible;
+            background-image: radial-gradient(circle at 50% 0%, #045ab1 0%, var(--primary) 100%);
+            border: 1px solid var(--primary);
+            border-bottom: 0;
+            transform: translateX(calc((var(--gap) * 2) + 100%)) rotate(-225deg);
+        }
+        .toggle-cont:has(.toggle-input:checked) .cont-icon .sparkle {
+            z-index: -10;
+            width: calc(var(--width) * 1.5px);
+            background-color: #acacac;
+        }
+
+        /* ═══════════════════════════════════════════
+           DARK MODE STYLES
+        ═══════════════════════════════════════════ */
+        body.dark-mode {
+            background: #0d0d1a !important;
+            color: #e0e0e0 !important;
+        }
+        body.dark-mode::before {
+            background:
+                radial-gradient(ellipse 55% 45% at 10% 15%, rgba(0,122,255,0.22) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 40% at 85% 10%, rgba(175,82,222,0.20) 0%, transparent 70%),
+                radial-gradient(ellipse 60% 50% at 50% 55%, rgba(90,200,250,0.14) 0%, transparent 70%),
+                radial-gradient(ellipse 45% 40% at 15% 80%, rgba(88,86,214,0.18) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 45% at 90% 75%, rgba(0,122,255,0.15) 0%, transparent 70%),
+                #0d0d1a !important;
+        }
+        body.dark-mode header {
+            background: rgba(13,13,26,0.85) !important;
+            border-bottom-color: rgba(0,122,255,0.2) !important;
+        }
+        body.dark-mode header.scrolled {
+            background: rgba(13,13,26,0.95) !important;
+        }
+        body.dark-mode .nav-links a { color: #e0e0e0 !important; }
+        body.dark-mode .nav-links a:hover,
+        body.dark-mode .nav-links a.active { color: var(--ios-blue) !important; }
+        body.dark-mode .about-card,
+        body.dark-mode .experience-card,
+        body.dark-mode .highlight-card,
+        body.dark-mode .ios-card,
+        body.dark-mode .contact-item,
+        body.dark-mode .contact-form {
+            background: rgba(30,30,50,0.72) !important;
+            border-color: rgba(255,255,255,0.1) !important;
+        }
+        body.dark-mode .about-card:hover,
+        body.dark-mode .experience-card:hover,
+        body.dark-mode .highlight-card:hover,
+        body.dark-mode .ios-card:hover,
+        body.dark-mode .contact-item:hover,
+        body.dark-mode .contact-form:hover {
+            background: rgba(40,40,70,0.88) !important;
+            border-color: rgba(0,122,255,0.4) !important;
+        }
+        body.dark-mode .tool-logo {
+            background: rgba(30,30,50,0.8) !important;
+            border-color: rgba(255,255,255,0.1) !important;
+        }
+        body.dark-mode .tool-name { color: #aaa !important; }
+        body.dark-mode .about-text p,
+        body.dark-mode .section-header p { color: #aaa !important; }
+        body.dark-mode .section-header h2 {
+            background: linear-gradient(135deg, #e0e0e0, var(--ios-blue)) !important;
+            -webkit-background-clip: text !important;
+            background-clip: text !important;
+        }
+        body.dark-mode .hero h1 {
+            background: linear-gradient(135deg, #e0e0e0, var(--ios-blue)) !important;
+            -webkit-background-clip: text !important;
+            background-clip: text !important;
+        }
+        body.dark-mode .hero p { color: #aaa !important; }
+        body.dark-mode .contact-form input,
+        body.dark-mode .contact-form textarea {
+            background: rgba(255,255,255,0.05) !important;
+            color: #e0e0e0 !important;
+            border-color: rgba(255,255,255,0.15) !important;
+        }
+        body.dark-mode .loading-overlay { background: #0d0d1a !important; }
+        body.dark-mode ::-webkit-scrollbar-track { background: #1a1a2e !important; }
+        body.dark-mode ::-webkit-scrollbar-thumb { background: #444 !important; }
+        body.dark-mode .skill { background: rgba(0,122,255,0.2) !important; color: #7cb9ff !important; }
+        body.dark-mode .skills-section h3,
+        body.dark-mode .about-card h3,
+        body.dark-mode .ios-card h3,
+        body.dark-mode .experience-card h3 { color: #e0e0e0 !important; }
+        body.dark-mode .custom-cursor { border-bottom-color: #e0e0e0 !important; }
 		
-		/* Grid system for the new section */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 24px;
+		
+		.tool-logo {
+    position: relative;
+    perspective: 600px;
+    aspect-ratio: 1;
 }
 
-/* FAQ Card styles – inherits glassmorphism from .ios-card */
-.faq-item {
-    background: rgba(255,255,255,0.55);
-    backdrop-filter: blur(10px) saturate(160%);
-    border: 1px solid rgba(255,255,255,0.75);
-    border-radius: var(--border-radius-xl);
-    margin-bottom: 20px;
-    overflow: hidden;
-    transition: all 0.4s var(--ease-cinematic);
-    box-shadow: var(--shadow-light);
-}
-
-.faq-item:hover {
-    transform: translateY(-4px);
-    background: rgba(255,255,255,0.72);
-    border-color: rgba(0,122,255,0.35);
-    box-shadow: 0 12px 28px rgba(0,122,255,0.15);
-}
-
-.faq-question {
-    padding: 24px 28px;
-    font-weight: 700;
-    font-size: 1.2rem;
-    color: var(--ios-black);
-    cursor: pointer;
+.tool-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 14px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    background: rgba(255,255,255,0.3);
-    transition: background 0.2s;
+    justify-content: center;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 0.35s ease, border-color 0.3s ease, background 0.3s ease;
+    overflow: visible;
+    /* match your existing card style here */
 }
 
-.faq-question i {
-    transition: transform 0.35s var(--ease-cinematic);
-    color: var(--ios-blue);
+.tool-logo:hover .tool-card-inner {
+    transform: scale(1.13);
+    border-color: #7F77DD;
+    z-index: 10;
 }
 
-.faq-item.active .faq-question i {
-    transform: rotate(180deg);
+.tool-logo img {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    transition: opacity 0.28s ease, transform 0.3s ease;
+    position: relative;
+    z-index: 1;
 }
 
-.faq-answer {
-    max-height: 0;
-    padding: 0 28px;
-    overflow: hidden;
-    transition: max-height 0.5s cubic-bezier(0.33, 1, 0.68, 1), padding 0.3s ease;
-    color: var(--ios-black-6);
-    line-height: 1.5;
-    background: rgba(255,255,255,0.2);
-    border-top: 0px solid transparent;
-}
-
-.faq-item.active .faq-answer {
-    max-height: 200px;  /* enough for content */
-    padding: 20px 28px 24px;
-    border-top-width: 1px;
-    border-top-color: rgba(0,122,255,0.2);
-}
-
-.reveal-up, .reveal-scale {
+.tool-logo:hover img {
     opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.9s var(--ease-cinematic), transform 0.9s var(--ease-cinematic);
+    transform: scale(0.8);
 }
 
-.reveal-scale {
-    transform: scale(0.95);
+.tool-name {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: Black;
+    text-align: center;
+    padding: 6px;
+    opacity: 0;
+    line-height: 1.3;
+    transition: opacity 0.28s ease, transform 0.3s ease;
+    transform: translateY(6px);
+    z-index: 2;
 }
 
-.reveal-up.revealed, .reveal-scale.revealed {
+.tool-logo:hover .tool-name {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0px);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .grid {
-        gap: 16px;
-    }
-    .faq-question {
-        padding: 18px 20px;
-        font-size: 1rem;
-    }
-    .faq-answer {
-        font-size: 0.9rem;
-    }
+.shine {
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    pointer-events: none;
+    background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 3;
 }
 
+.tool-logo:hover .shine {
+    opacity: 1;
+}
+/* ── HERO SKILL PILLS ── */
+.hero-skills-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 16px 0 24px 0;
+}
+.hero-skill-pill {
+    background: var(--ios-blue);
+    color: white;
+    border: 1px solid rgba(139, 92, 246, 0.45);
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    cursor: default;
+    transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 0 0 0 rgba(93, 24, 220, 0);
+}
+.hero-skill-pill:hover {
+    background: hsl(261deg 80% 48%);
+    color: white;
+    border-color: rgba(139, 92, 246, 0.9);
+    box-shadow: rgb(93, 24, 220) 0px 6px 24px 0px;
+    transform: translateY(-3px) scale(1.06);
+}
+body.dark-mode .hero-skill-pill {
+    background: var(--ios-blue);
+    border-color: rgba(139, 92, 246, 0.4);
+    color: white;
+}
+body.dark-mode .hero-skill-pill:hover {
+    background: rgba(93, 24, 220, 0.7);
+    color: white;
+}
     </style>
 </head>
 <body>
 
     <!-- Loading Overlay -->
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="apple-loader"></div>
-        <div class="loading-text">Loading...</div>
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner-wrapper">
+        <div class="bounce-loader"></div>
+        <p class="spinner-text">Loading...</p>
     </div>
+</div>
 
     <!-- Header -->
     <header id="mainHeader">
@@ -1134,6 +1550,34 @@
                     <a href="#contact"        class="nav-link">Contact</a>
                 </div>
                 <a href="#contact" class="ios-btn">Let's Connect</a>
+                <!-- Dark Mode Toggle -->
+                <div class="toggle-cont" id="darkModeToggle" title="Toggle dark mode">
+                    <input class="toggle-input" type="checkbox" id="darkToggleInput">
+                    <label class="toggle-label" for="darkToggleInput">
+                        <div class="cont-icon">
+                            <span class="sparkle" style="--deg:0;--duration:25"></span>
+                            <span class="sparkle" style="--deg:45;--duration:18"></span>
+                            <span class="sparkle" style="--deg:90;--duration:30"></span>
+                            <span class="sparkle" style="--deg:135;--duration:22"></span>
+                            <span class="sparkle" style="--deg:180;--duration:27"></span>
+                            <span class="sparkle" style="--deg:225;--duration:20"></span>
+                            <span class="sparkle" style="--deg:270;--duration:35"></span>
+                            <span class="sparkle" style="--deg:315;--duration:15"></span>
+                            <!-- Moon icon (dark mode off = show moon) -->
+                            <svg class="icon" id="moonIcon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                            </svg>
+                            <!-- Sun icon (dark mode on = show sun) -->
+                            <svg class="icon" id="sunIcon" style="display:none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="5"/>
+                                <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                                <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+                                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                            </svg>
+                        </div>
+                    </label>
+                </div>
             </nav>
         </div>
     </header>
@@ -1145,11 +1589,36 @@
                 <h1>Koushik Gurrala</h1>
                 <h2>DevOps &amp; SRE Engineer</h2>
                 <p>
-                    Building stable, scalable, and secure cloud infrastructure.<br>
-                    Passionate about automation, reliability, and modern DevOps culture.
+                    3.8+ years delivering DevOps solutions on AWS. Reduced deployment errors and release cycles through intelligent automation..
                 </p>
-                <a href="#contact" class="ios-btn">Hire Me</a>
-                <a href="Koushik_Gurrala_AWS DevOps&SRE_Resume_2025.pdf" download class="ios-btn">Download Resume</a>
+				<div class="hero-skills-row">
+    <span class="hero-skill-pill">AWS</span>
+    <span class="hero-skill-pill">Kubernetes</span>
+    <span class="hero-skill-pill">Terraform</span>
+    <span class="hero-skill-pill">ArgoCD</span>
+    <span class="hero-skill-pill">Docker</span>
+    <span class="hero-skill-pill">Jenkins</span>
+    <span class="hero-skill-pill">GitOps</span>
+</div>
+
+                <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:0;">
+                <a href="#contact" class="hire-me-btn">Hire Me</a>
+                <!-- Animated Download Toggle Button -->
+                <div class="dl-container">
+                    <label class="label" id="downloadLabel">
+                        <input class="input" type="checkbox" id="downloadToggle">
+                        <div class="circle">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 15L12 3M12 15L8 11M12 15L16 11" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M4 20H20" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <div class="square"></div>
+                        </div>
+                        <span class="title">Download Resume</span>
+                        <span class="title">Done!</span>
+                    </label>
+                </div>
+                </div>
             </div>
             <div class="hero-decoration"></div>
         </div>
@@ -1169,36 +1638,167 @@
                         I've reduced deployment errors by 70% and accelerated release cycles through intelligent automation and robust pipeline design. My focus is on building scalable, secure, and cost-efficient cloud environments — powered by AI-driven monitoring and predictive analytics using Prometheus and Grafana.
                     </p>
                     <p>Currently pursuing an M.Tech at BITS Pilani, I bring a mindset of continuous improvement, system reliability, and forward-thinking engineering to every project.</p>
-                    <p><strong>Scroll down and explore how next-gen DevOps can transform your cloud journey.</strong></p>
                     <p>I thrive in environments where I can collaborate, automate, and continuously improve both systems and teams. Let's innovate together!</p>
                 </div>
 
                 <!-- Skill Icons Grid -->
                 <h3 align="center" style="margin-top: 60px; margin-bottom: 25px; color: var(--ios-blue);">Skills &amp; Tools</h3>
                 <div class="tools-grid" id="toolsGrid">
-                    <div class="tool-logo reveal-child"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="AWS"><div class="tool-name">AWS</div></div>
-                    <div class="tool-logo reveal-child"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg" alt="Azure"><div class="tool-name">Azure</div></div>
-                    <div class="tool-logo reveal-child"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git"><div class="tool-name">Git</div></div>
-                    <div class="tool-logo reveal-child"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg" alt="Jenkins"><div class="tool-name">Jenkins</div></div>
-                    <div class="tool-logo reveal-child"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub Actions"><div class="tool-name">GitHub Actions</div></div>
-                    <div class="tool-logo reveal-child"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg" alt="Kubernetes"><div class="tool-name">Kubernetes</div></div>
-                    <div class="tool-logo reveal-child"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker"><div class="tool-name">Docker</div></div>
-                    <div class="tool-logo reveal-child"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/argocd/argocd-original.svg" alt="ArgoCD" onerror="this.style.display='none'"><div class="tool-name">ArgoCD</div></div>
-                    <div class="tool-logo reveal-child"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/terraform/terraform-original.svg" alt="Terraform"><div class="tool-name">Terraform</div></div>
-                    <div class="tool-logo reveal-child"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prometheus/prometheus-original.svg" alt="Prometheus"><div class="tool-name">Prometheus</div></div>
-                    <div class="tool-logo reveal-child"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/grafana/grafana-original.svg" alt="Grafana"><div class="tool-name">Grafana</div></div>
-                    <div class="tool-logo reveal-child"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/elasticsearch/elasticsearch-original.svg" alt="Elasticsearch"><div class="tool-name">Elasticsearch</div></div>
-                    <div class="tool-logo reveal-child"><img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/fluentd.svg" alt="fluentd"><div class="tool-name">Fluentd</div></div>
-                    <div class="tool-logo reveal-child"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/elastic-kibana.svg" alt="Kibana"><div class="tool-name">Kibana</div></div>
-                    <div class="tool-logo reveal-child"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sonarqube/sonarqube-original.svg" alt="SonarQube" onerror="this.style.display='none'"><div class="tool-name">SonarQube</div></div>
-                    <div class="tool-logo reveal-child"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/trivy.png" alt="Trivy"><div class="tool-name">Trivy</div></div>
-                    <div class="tool-logo reveal-child"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" alt="Linux"><div class="tool-name">Linux</div></div>
-                    <div class="tool-logo reveal-child"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg" alt="Shell Scripting"><div class="tool-name">Shell Scripting</div></div>
-                    <div class="tool-logo reveal-child"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python"><div class="tool-name">Python</div></div>
-                    <div class="tool-logo reveal-child"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/helm/helm-original.svg" alt="Helm" onerror="this.style.display='none'"><div class="tool-name">Helm</div></div>
-                    <div class="tool-logo reveal-child"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ansible/ansible-original.svg" alt="Ansible"><div class="tool-name">Ansible</div></div>
-                    <div class="tool-logo reveal-child"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/n8n.svg" alt="n8n"><div class="tool-name">n8n</div></div>
-                </div>
+    <div class="tool-logo reveal-child">
+        <div class="tool-card-inner">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="AWS">
+            <div class="tool-name">AWS</div>
+            <div class="shine"></div>
+        </div>
+    </div>
+    <div class="tool-logo reveal-child">
+        <div class="tool-card-inner">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg" alt="Azure">
+            <div class="tool-name">Azure</div>
+            <div class="shine"></div>
+        </div>
+    </div>
+    <div class="tool-logo reveal-child">
+        <div class="tool-card-inner">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git">
+            <div class="tool-name">Git</div>
+            <div class="shine"></div>
+        </div>
+    </div>
+    <div class="tool-logo reveal-child">
+        <div class="tool-card-inner">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg" alt="Jenkins">
+            <div class="tool-name">Jenkins</div>
+            <div class="shine"></div>
+        </div>
+    </div>
+    <div class="tool-logo reveal-child">
+        <div class="tool-card-inner">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub Actions">
+            <div class="tool-name">GitHub Actions</div>
+            <div class="shine"></div>
+        </div>
+    </div>
+    <div class="tool-logo reveal-child">
+        <div class="tool-card-inner">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg" alt="Kubernetes">
+            <div class="tool-name">Kubernetes</div>
+            <div class="shine"></div>
+        </div>
+    </div>
+    <div class="tool-logo reveal-child">
+        <div class="tool-card-inner">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker">
+            <div class="tool-name">Docker</div>
+            <div class="shine"></div>
+        </div>
+    </div>
+    <div class="tool-logo reveal-child">
+        <div class="tool-card-inner">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/argocd/argocd-original.svg" alt="ArgoCD" onerror="this.style.display='none'">
+            <div class="tool-name">ArgoCD</div>
+            <div class="shine"></div>
+        </div>
+    </div>
+    <div class="tool-logo reveal-child">
+        <div class="tool-card-inner">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/terraform/terraform-original.svg" alt="Terraform">
+            <div class="tool-name">Terraform</div>
+            <div class="shine"></div>
+        </div>
+    </div>
+    <div class="tool-logo reveal-child">
+        <div class="tool-card-inner">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prometheus/prometheus-original.svg" alt="Prometheus">
+            <div class="tool-name">Prometheus</div>
+            <div class="shine"></div>
+        </div>
+    </div>
+    <div class="tool-logo reveal-child">
+        <div class="tool-card-inner">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/grafana/grafana-original.svg" alt="Grafana">
+            <div class="tool-name">Grafana</div>
+            <div class="shine"></div>
+        </div>
+    </div>
+    <div class="tool-logo reveal-child">
+        <div class="tool-card-inner">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/elasticsearch/elasticsearch-original.svg" alt="Elasticsearch">
+            <div class="tool-name">Elasticsearch</div>
+            <div class="shine"></div>
+        </div>
+    </div>
+    <div class="tool-logo reveal-child">
+        <div class="tool-card-inner">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/fluentd.svg" alt="Fluentd">
+            <div class="tool-name">Fluentd</div>
+            <div class="shine"></div>
+        </div>
+    </div>
+    <div class="tool-logo reveal-child">
+        <div class="tool-card-inner">
+            <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/elastic-kibana.svg" alt="Kibana">
+            <div class="tool-name">Kibana</div>
+            <div class="shine"></div>
+        </div>
+    </div>
+    <div class="tool-logo reveal-child">
+        <div class="tool-card-inner">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sonarqube/sonarqube-original.svg" alt="SonarQube" onerror="this.style.display='none'">
+            <div class="tool-name">SonarQube</div>
+            <div class="shine"></div>
+        </div>
+    </div>
+    <div class="tool-logo reveal-child">
+        <div class="tool-card-inner">
+            <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/trivy.png" alt="Trivy">
+            <div class="tool-name">Trivy</div>
+            <div class="shine"></div>
+        </div>
+    </div>
+    <div class="tool-logo reveal-child">
+        <div class="tool-card-inner">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" alt="Linux">
+            <div class="tool-name">Linux</div>
+            <div class="shine"></div>
+        </div>
+    </div>
+    <div class="tool-logo reveal-child">
+        <div class="tool-card-inner">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg" alt="Shell Scripting">
+            <div class="tool-name">Shell Scripting</div>
+            <div class="shine"></div>
+        </div>
+    </div>
+    <div class="tool-logo reveal-child">
+        <div class="tool-card-inner">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python">
+            <div class="tool-name">Python</div>
+            <div class="shine"></div>
+        </div>
+    </div>
+    <div class="tool-logo reveal-child">
+        <div class="tool-card-inner">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/helm/helm-original.svg" alt="Helm" onerror="this.style.display='none'">
+            <div class="tool-name">Helm</div>
+            <div class="shine"></div>
+        </div>
+    </div>
+    <div class="tool-logo reveal-child">
+        <div class="tool-card-inner">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ansible/ansible-original.svg" alt="Ansible">
+            <div class="tool-name">Ansible</div>
+            <div class="shine"></div>
+        </div>
+    </div>
+    <div class="tool-logo reveal-child">
+        <div class="tool-card-inner">
+            <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/n8n.svg" alt="n8n">
+            <div class="tool-name">n8n</div>
+            <div class="shine"></div>
+        </div>
+    </div>
+</div>
             </div>
         </div>
     </section>
@@ -1326,7 +1926,7 @@
             </div>
             <div class="cards-grid">
                 <div class="ios-card reveal-child">
-                    <span class="cert-status">Inprogress</span>
+                    <span class="cert-status">Currently pursuing</span>
                     <div class="card-title">AWS Certified Solutions Architect – Associate</div>
                     <div class="card-subtitle">Amazon Web Services</div>
                     <div class="card-description">Verified knowledge in designing and deploying scalable AWS systems.</div>
@@ -1341,31 +1941,6 @@
         </div>
     </section>
 
-<section class="section">
-    <div class="container">
-        <div class="grid">
-            <div class="reveal-up" style="grid-column: span 15; text-align: center;">
-                <h2 class="section-header reveal">Why work with me?</h2>
-                <div class="section-subhead">Reliability, security, and a collaborative approach.</div>
-            </div>
-            <div style="grid-column: span 12; max-width: 800px; margin: 0 auto;">
-                <div class="faq-item reveal-scale">
-                    <div class="faq-question">How do you ensure zero‑downtime deployments? <i class="fas fa-chevron-down"></i></div>
-                    <div class="faq-answer">Argo Rollouts with Canary & Blue‑Green strategies on EKS, plus automated rollback based on Prometheus metrics.</div>
-                </div>
-                <div class="faq-item reveal-scale">
-                    <div class="faq-question">What’s your security philosophy? <i class="fas fa-chevron-down"></i></div>
-                    <div class="faq-answer">Least‑privilege IAM, Distroless containers, Trivy in CI, and continuous compliance as code.</div>
-                </div>
-                <div class="faq-item reveal-scale">
-                    <div class="faq-question">Can you reduce cloud waste? <i class="fas fa-chevron-down"></i></div>
-                    <div class="faq-answer">Yes — I saved $2k/month by automating non‑prod shutdowns, right‑sizing, and spot strategies.</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
     <!-- Contact Section -->
     <section class="contact" id="contact">
         <div class="container">
@@ -1379,7 +1954,7 @@
                         <div class="contact-icon"><i class="fas fa-phone"></i></div>
                         <div class="contact-details">
                             <h3>Phone</h3>
-                            <a href="" target="_blank">+917207076532</a>
+							<a href="tel:+917207076532">+917207XXXXX</a>
                         </div>
                     </div>
                     <div class="contact-item reveal-child">
@@ -1449,13 +2024,18 @@
         </div>
     </footer>
 
+    <!-- ═══════════════════════════════════════════
+         PREMIUM MOTION ENGINE
+         Intersection Observer + CSS transitions
+         GPU-friendly · 60fps · No scroll hijacking
+    ═══════════════════════════════════════════ -->
     <script>
     /* ─── 1. LOADING OVERLAY ─────────────────────────── */
     window.addEventListener('load', function () {
         setTimeout(function () {
             document.getElementById('loadingOverlay').classList.add('hidden');
             document.body.classList.add('loaded');
-        }, 700);
+        }, 2500);
     });
 
     /* ─── 2. NAVBAR: SCROLL GLASS + ACTIVE SECTION ──── */
@@ -1628,6 +2208,60 @@
         document.querySelectorAll('.reveal-right, .reveal-left').forEach(el => revealObs.observe(el));
     })();
 
+    /* ─── DOWNLOAD TOGGLE: trigger actual download ─── */
+    (function () {
+        const toggle = document.getElementById('downloadToggle');
+        if (!toggle) return;
+        let downloaded = false;
+        toggle.addEventListener('change', function () {
+            if (this.checked && !downloaded) {
+                downloaded = true;
+                // Trigger download
+                const link = document.createElement('a');
+                link.href = 'Koushik_Gurrala_AWS DevOps&SRE_Resume_2025.pdf';
+                link.download = 'Koushik_Gurrala_Resume_2025.pdf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                // Reset after animation completes (4s)
+                setTimeout(() => {
+                    toggle.checked = false;
+                    downloaded = false;
+                }, 4200);
+            }
+        });
+    })();
+
+    /* ─── DARK MODE TOGGLE ─── */
+    (function () {
+        const toggleInput = document.getElementById('darkToggleInput');
+        const moonIcon = document.getElementById('moonIcon');
+        const sunIcon  = document.getElementById('sunIcon');
+        if (!toggleInput) return;
+
+        // Restore preference
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            toggleInput.checked = true;
+            if (moonIcon) moonIcon.style.display = 'none';
+            if (sunIcon)  sunIcon.style.display  = 'block';
+        }
+
+        toggleInput.addEventListener('change', function () {
+            if (this.checked) {
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('darkMode', 'true');
+                if (moonIcon) moonIcon.style.display = 'none';
+                if (sunIcon)  sunIcon.style.display  = 'block';
+            } else {
+                document.body.classList.remove('dark-mode');
+                localStorage.setItem('darkMode', 'false');
+                if (moonIcon) moonIcon.style.display = 'block';
+                if (sunIcon)  sunIcon.style.display  = 'none';
+            }
+        });
+    })();
+
     /* ─── 6. SECTION HEADER stagger (heading + subtitle) */
     (function () {
         const headerObs = new IntersectionObserver(function (entries) {
@@ -1755,28 +2389,41 @@
         }, { threshold: 0.06 });
         obs.observe(expCard);
     })();
-	// FAQ Toggle functionality
-document.querySelectorAll('.faq-question').forEach(question => {
-    question.addEventListener('click', () => {
-        const faqItem = question.closest('.faq-item');
-        if (faqItem) {
-            faqItem.classList.toggle('active');
-        }
+	
+	document.querySelectorAll('.tool-logo').forEach(card => {
+    const inner = card.querySelector('.tool-card-inner');
+    card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const cx = rect.width / 2;
+        const cy = rect.height / 2;
+        const ry = ((x - cx) / cx) * 14;
+        const rx = -((y - cy) / cy) * 14;
+        inner.style.transform = `scale(1.13) rotateX(${rx}deg) rotateY(${ry}deg)`;
+    });
+    card.addEventListener('mouseleave', () => {
+        inner.style.transform = 'scale(1) rotateX(0deg) rotateY(0deg)';
     });
 });
 
-// Extend scroll reveal to .reveal-up and .reveal-scale
-const extraReveal = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('revealed');
-            extraReveal.unobserve(entry.target);
-        }
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.tool-logo').forEach(function(card) {
+    var inner = card.querySelector('.tool-card-inner');
+    card.addEventListener('mouseenter', function() {
+      inner.style.transition = 'transform 0.15s ease, border-color 0.3s ease';
     });
-}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-
-document.querySelectorAll('.reveal-up, .reveal-scale').forEach(el => {
-    extraReveal.observe(el);
+    card.addEventListener('mousemove', function(e) {
+      var rect = card.getBoundingClientRect();
+      var ry = (((e.clientX - rect.left) / rect.width) - 0.5) * 30;
+      var rx = -(((e.clientY - rect.top) / rect.height) - 0.5) * 30;
+      inner.style.transform = 'scale(1.12) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg)';
+    });
+    card.addEventListener('mouseleave', function() {
+      inner.style.transition = 'transform 0.4s ease, border-color 0.3s ease';
+      inner.style.transform = 'scale(1) rotateX(0deg) rotateY(0deg)';
+    });
+  });
 });
     </script>
 </body>
