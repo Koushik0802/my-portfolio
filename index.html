@@ -1069,7 +1069,7 @@
         }
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 24px;
         }
         .ios-card {
@@ -2168,9 +2168,32 @@
         body.dark-mode .spinner-text {
             color: #f08080 !important;
         }
+		
+		body {
+  cursor: none !important;
+}
+
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-bottom: 20px solid #007AFF;
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotate(-20deg);
+  z-index: 9999;
+  transition: all 0.1s ease;
+}
+    </style>
     </style>
 </head>
 <body>
+
+<!-- custom-cursor -->
+<div class="custom-cursor"></div>
 
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
@@ -2179,8 +2202,6 @@
             <p class="spinner-text">Loading...</p>
         </div>
     </div>
-
-    <!-- Parallax background layer (injected by JS) -->
 
     <!-- Header -->
     <header id="mainHeader">
@@ -2546,21 +2567,19 @@
         </div>
     </section>
 
-    <!-- Education Section -->
+    <!-- Education Section (FIXED) -->
     <section class="education" id="education">
         <div class="container">
             <div class="section-header reveal">
                 <h2>Education</h2>
             </div>
-            </div>
+            <!-- Both cards inside a single .cards-grid for consistent layout -->
             <div class="cards-grid fade-in">
                 <div class="ios-card reveal-child">
                     <div class="card-title">MTech</div>
                     <div class="card-subtitle">BITS Pilani</div>
                     <div class="card-description">Pursuing: 2025<br>Relevant Coursework: Operating Systems, Cloud Computing, Artificial Intelligence.</div>
                 </div>
-            </div>
-            <div class="cards-grid fade-in" style="margin-top: 24px;">
                 <div class="ios-card reveal-child">
                     <div class="card-title">Bachelor of Computer Science</div>
                     <div class="card-subtitle">Andhra University</div>
@@ -2697,8 +2716,6 @@
                 document.body.classList.add('loaded');
             }, 1500);
         });
-
-
 
         /* ─── 3. NAVBAR: SCROLL GLASS + ACTIVE SECTION ──── */
         (function() {
@@ -3123,6 +3140,26 @@
                 }, 5000);
             });
         }
+		
+				// Custom cursor movement
+document.addEventListener('mousemove', (e) => {
+  const cursor = document.querySelector('.custom-cursor');
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+});
+
+// Change cursor on hoverable elements
+document.querySelectorAll('a, button, .skill-card, .cta-button').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    document.querySelector('.custom-cursor').style.transform =
+      'translate(-50%, -50%) rotate(-15deg) scale(1.5)';
+  });
+
+  el.addEventListener('mouseleave', () => {
+    document.querySelector('.custom-cursor').style.transform =
+      'translate(-50%, -50%) rotate(-15deg) scale(1)';
+  });
+});
     </script>
 </body>
 </html>
