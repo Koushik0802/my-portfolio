@@ -65,6 +65,7 @@
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            cursor: none !important;
         }
 
         body::before {
@@ -2169,25 +2170,24 @@
             color: #f08080 !important;
         }
 		
-		body {
-  cursor: none !important;
-}
+        * {
+            cursor: none !important;
+        }
 
-.custom-cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 0;
-  border-left: 9px solid transparent;
-  border-right: 9px solid transparent;
-  border-bottom: 20px solid #007AFF;
-  pointer-events: none;
-  transform: translate(-50%, -50%) rotate(-20deg);
-  z-index: 9999;
-  transition: all 0.1s ease;
-}
-    </style>
+        .custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 9px solid transparent;
+            border-right: 9px solid transparent;
+            border-bottom: 20px solid #007AFF;
+            pointer-events: none;
+            transform: translate(-50%, -50%) rotate(-20deg);
+            z-index: 9999;
+            transition: all 0.1s ease;
+        }
     </style>
 </head>
 <body>
@@ -2714,7 +2714,7 @@
             setTimeout(function() {
                 document.getElementById('loadingOverlay').classList.add('hidden');
                 document.body.classList.add('loaded');
-            }, 1500);
+            }, 1000);
         });
 
         /* ─── 3. NAVBAR: SCROLL GLASS + ACTIVE SECTION ──── */
@@ -2889,7 +2889,6 @@
             document.querySelectorAll('.reveal-right, .reveal-left').forEach(el => revealObs.observe(el));
         })();
 
-		
         /* ─── 7. DOWNLOAD TOGGLE ──────────────────────────── */
         (function() {
             const toggle = document.getElementById('downloadToggle');
@@ -2899,12 +2898,9 @@
                 if (this.checked && !downloaded) {
                     downloaded = true;
                     const link = document.createElement('a');
-					link.href = 'Koushik_Gurrala_AWS DevOpsSRE_Resume_2026.docx';
-                    link.download = 'Koushik_Gurrala_AWS DevOpsSRE_Resume_2026.docx';
-					link.href = 'Koushik_Gurrala_AWS DevOpsSRE_Resume_2026.pdf';
-                    link.download = 'Koushik_Gurrala_AWS DevOpsSRE_Resume_2026.pdf';
+                    link.href = 'Koushik_Gurrala_AWS DevOps&SRE_Resume_2025.pdf';
+                    link.download = 'Koushik_Gurrala_Resume_2025.pdf';
                     document.body.appendChild(link);
-				
                     link.click();
                     document.body.removeChild(link);
                     setTimeout(() => {
@@ -3148,20 +3144,26 @@
 				// Custom cursor movement
 document.addEventListener('mousemove', (e) => {
   const cursor = document.querySelector('.custom-cursor');
-  cursor.style.left = e.clientX + 'px';
-  cursor.style.top = e.clientY + 'px';
+  if (cursor) {
+    cursor.style.setProperty('left', e.clientX + 'px', 'important');
+    cursor.style.setProperty('top', e.clientY + 'px', 'important');
+  }
 });
 
 // Change cursor on hoverable elements
-document.querySelectorAll('a, button, .skill-card, .cta-button').forEach(el => {
+document.querySelectorAll('a, button, .skill-card, .cta-button, .highlight-card, .about-card, .experience-card').forEach(el => {
   el.addEventListener('mouseenter', () => {
-    document.querySelector('.custom-cursor').style.transform =
-      'translate(-50%, -50%) rotate(-15deg) scale(1.5)';
+    const cursor = document.querySelector('.custom-cursor');
+    if (cursor) {
+      cursor.style.setProperty('transform', 'translate(-50%, -50%) rotate(-15deg) scale(1.5)', 'important');
+    }
   });
 
   el.addEventListener('mouseleave', () => {
-    document.querySelector('.custom-cursor').style.transform =
-      'translate(-50%, -50%) rotate(-15deg) scale(1)';
+    const cursor = document.querySelector('.custom-cursor');
+    if (cursor) {
+      cursor.style.setProperty('transform', 'translate(-50%, -50%) rotate(-20deg) scale(1)', 'important');
+    }
   });
 });
     </script>
