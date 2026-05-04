@@ -2188,6 +2188,114 @@
             z-index: 9999;
             transition: all 0.1s ease;
         }
+		
+
+		/* ═══════════════════════════════════════════
+   FAQ SECTION
+═══════════════════════════════════════════ */
+.faq {
+    background: transparent;
+}
+
+.faq-wrap {
+    max-width: 920px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.faq-item {
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow:
+        0 4px 24px rgba(0, 100, 255, 0.07),
+        0 1px 4px rgba(0, 0, 0, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.85);
+    transition: all 0.45s var(--ease-cinematic);
+}
+
+.faq-item:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0, 122, 255, 0.25);
+    box-shadow:
+        0 12px 36px rgba(0, 122, 255, 0.14),
+        0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.faq-question {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ios-black);
+    text-align: left;
+    font-family: inherit;
+}
+
+.faq-question span {
+    flex: 1;
+    line-height: 1.5;
+}
+
+.faq-icon {
+    font-size: 15px;
+    color: var(--ios-blue);
+    transition: transform 0.35s ease;
+    flex-shrink: 0;
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.45s var(--ease-cinematic);
+}
+
+.faq-answer p {
+    padding: 0 28px 24px;
+    color: var(--ios-gray-6);
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 220px;
+}
+
+.faq-item.active .faq-icon {
+    transform: rotate(45deg);
+}
+
+/* Dark Mode */
+body.dark-mode .faq-item {
+    background: rgba(30, 30, 50, 0.72);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .faq-item:hover {
+    border-color: rgba(0, 122, 255, 0.35);
+    box-shadow: 0 12px 36px rgba(0, 122, 255, 0.18);
+}
+
+body.dark-mode .faq-question {
+    color: #e0e0e0;
+}
+
+body.dark-mode .faq-answer p {
+    color: #bfc7d8;
+}
     </style>
 </head>
 <body>
@@ -2612,6 +2720,59 @@
         </div>
     </section>
 
+ <!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>Frequently Asked Questions</h2>
+      <p>Answers to the questions people usually ask.</p>
+    </div>
+
+    <div class="faq-wrap">
+
+      <div class="faq-item reveal-child active">
+        <button class="faq-question">
+          <span>What services do you specialize in?</span>
+          <i class="fas fa-plus faq-icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p>
+            I specialize in DevOps engineering, CI/CD automation, Kubernetes orchestration,
+            cloud infrastructure, observability, and production-grade deployment pipelines.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item reveal-child">
+        <button class="faq-question">
+          <span>Do you work with cloud-native platforms?</span>
+          <i class="fas fa-plus faq-icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. I work with AWS, Docker, Kubernetes, Terraform, GitOps workflows,
+            monitoring stacks, and scalable cloud-native deployments.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item reveal-child">
+        <button class="faq-question">
+          <span>Can you automate end-to-end deployment workflows?</span>
+          <i class="fas fa-plus faq-icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. I build automated delivery pipelines covering build, test, packaging,
+            containerization, deployment, monitoring, and rollback strategies.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
     <!-- Contact Section -->
     <section class="contact" id="contact">
         <div class="container">
@@ -2898,8 +3059,8 @@
                 if (this.checked && !downloaded) {
                     downloaded = true;
                     const link = document.createElement('a');
-                    link.href = 'Koushik_Gurrala_AWS DevOpsSRE_Resume_2026.pdf';
-                    link.download = 'Koushik_Gurrala_AWS DevOpsSRE_Resume_2026.pdf';
+                    link.href = 'Koushik_Gurrala_AWS DevOps&SRE_Resume_2025.pdf';
+                    link.download = 'Koushik_Gurrala_Resume_2025.pdf';
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
@@ -3166,6 +3327,22 @@ document.querySelectorAll('a, button, .skill-card, .cta-button, .highlight-card,
     }
   });
 });
+
+// Adding FAQ elements
+document.querySelectorAll(".faq-question").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const item = btn.parentElement;
+      const isActive = item.classList.contains("active");
+
+      document.querySelectorAll(".faq-item").forEach((faq) => {
+        faq.classList.remove("active");
+      });
+
+      if (!isActive) {
+        item.classList.add("active");
+      }
+    });
+  });
     </script>
 </body>
 </html>
