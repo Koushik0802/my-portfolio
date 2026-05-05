@@ -929,55 +929,85 @@
         }
 
         /* ═══════════════════════════════════════════
-           HIGHLIGHTS
+           AREAS OF IMPACT – INFINITE SCROLL
         ═══════════════════════════════════════════ */
-        .highlights-container {
-            display: flex;
-            justify-content: center;
-            padding-left: 0;
+        .highlights {
+            overflow: hidden;
         }
-        .cards {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            margin: 0;
-            padding: 0;
+
+        .infinite-scroll-container {
+            position: relative;
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            cursor: grab;
+            user-select: none;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--ios-blue) transparent;
         }
+
+        .infinite-scroll-container:active {
+            cursor: grabbing;
+        }
+
+        .infinite-scroll-container::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .infinite-scroll-container::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+
+        .infinite-scroll-container::-webkit-scrollbar-thumb {
+            background: var(--ios-blue);
+            border-radius: 10px;
+        }
+
+        .cards-track {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 1.8rem;
+            width: max-content;
+            padding: 0.8rem 1rem 1.8rem;
+        }
+
         .card {
-            height: 400px;
+            flex: 0 0 auto;
             width: 340px;
-            gap: 20px;
-            flex-shrink: 0;
+            min-height: 400px;
             padding: 28px 24px;
             border-radius: 20px;
             cursor: pointer;
-            transition: 400ms cubic-bezier(0.22, 1, 0.36, 1);
+            position: relative;
+            overflow: hidden;
+
             background: rgba(255, 255, 255, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.75);
             backdrop-filter: blur(10px) saturate(160%);
             -webkit-backdrop-filter: blur(10px) saturate(160%);
-            border: 1px solid rgba(255, 255, 255, 0.75);
             box-shadow: 0 4px 24px rgba(0, 100, 255, 0.07);
-            position: relative;
+
+            transition:
+                transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.35s ease,
+                background 0.35s ease,
+                border-color 0.35s ease;
         }
 
         .card::before {
-            width: 220px;
-            gap: 20px;
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
+            inset: 0 0 auto 0;
             height: 50%;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 100%);
+            background: linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 100%);
             border-radius: inherit;
             pointer-events: none;
-            z-index: 0;
         }
 
-        .card>* {
+        .card > * {
             position: relative;
             z-index: 1;
         }
@@ -992,17 +1022,10 @@
         }
 
         .card .tip {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 700;
             margin-bottom: 12px;
             color: #051175;
-        }
-
-        .card .second-text {
-            font-size: 13px;
-            color: #8E8E93;
-            line-height: 1.6;
-            opacity: 0.8;
         }
 
         .card .highlight-description {
@@ -1010,14 +1033,16 @@
             padding: 0;
             margin: 0;
             font-size: 15px;
-            color: Black;
-            line-height: 1.7;
+            color: black;
+            line-height: 1.65;
         }
+
         .card .highlight-description li {
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             position: relative;
             padding-left: 16px;
         }
+
         .card .highlight-description li::before {
             content: '•';
             position: absolute;
@@ -1027,38 +1052,50 @@
         }
 
         .card:hover {
-            transform: scale(1.08, 1.08);
-            background: rgba(255, 255, 255, 0.85);
-            border-color: rgba(0, 122, 255, 0.35);
-            box-shadow: 0 12px 40px rgba(0, 122, 255, 0.18);
-            backdrop-filter: blur(28px) saturate(200%) brightness(1.05);
-            -webkit-backdrop-filter: blur(28px) saturate(200%) brightness(1.05);
+            transform: scale(1.05) translateY(-6px);
+            background: rgba(255, 255, 255, 0.92);
+            border-color: rgba(0, 122, 255, 0.5);
+            box-shadow: 0 18px 36px rgba(0, 122, 255, 0.2);
         }
 
-        .cards:hover>.card:not(:hover) {
-            filter: blur(6px);
-            transform: scale(0.95, 0.95);
-            opacity: 0.7;
+        /* No blur on siblings */
+        .cards-track:hover > .card:not(:hover) {
+            filter: none !important;
+            transform: none !important;
+            opacity: 1 !important;
         }
 
-        .skill-badge {
-            background: linear-gradient(135deg, rgba(0, 122, 255, 0.1), rgba(175, 82, 222, 0.1));
-            border: 1px solid rgba(0, 122, 255, 0.2);
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 500;
-            color: black;
-            transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
+        /* Dark mode */
+        body.dark-mode .card {
+            background: rgba(30, 30, 50, 0.72) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
         }
 
-        .skill-badge:hover {
-            background: linear-gradient(135deg, rgba(0, 122, 255, 0.2), rgba(175, 82, 222, 0.15));
-            transform: translateX(6px);
+        body.dark-mode .card:hover {
+            background: rgba(40, 40, 70, 0.88) !important;
+            border-color: rgba(0, 122, 255, 0.35) !important;
+        }
+
+        body.dark-mode .card .tip {
+            color: #b0c4ff;
+        }
+
+        body.dark-mode .card .highlight-description li {
+            color: #d6d6d6;
+        }
+
+        @media (max-width: 768px) {
+            .card {
+                width: 300px;
+                min-height: 360px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                width: 280px;
+                padding: 20px;
+            }
         }
 
         /* ═══════════════════════════════════════════
@@ -2053,42 +2090,6 @@
             border-bottom-color: #e0e0e0 !important;
         }
 
-        /* Dark mode — Highlights cards */
-        body.dark-mode .card {
-            background: rgba(30, 30, 50, 0.75) !important;
-            border: 1px solid rgba(255, 255, 255, 0.15) !important;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3) !important;
-        }
-        body.dark-mode .card::before {
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 100%) !important;
-        }
-        body.dark-mode .card .tip {
-            color: #e0e0e0 !important;
-        }
-        body.dark-mode .card .highlight-description {
-            color: #ccc !important;
-        }
-        body.dark-mode .card .highlight-description li {
-            color: #ccc !important;
-        }
-        body.dark-mode .card .highlight-description li::before {
-            color: var(--ios-blue) !important;
-        }
-        body.dark-mode .card .icon {
-            background: linear-gradient(135deg, #5AC8FA, #AF52DE);
-            -webkit-background-clip: text !important;
-            background-clip: text !important;
-        }
-        body.dark-mode .card:hover {
-            background: rgba(40, 40, 70, 0.9) !important;
-            border-color: rgba(0, 122, 255, 0.5) !important;
-            box-shadow: 0 12px 40px rgba(0, 122, 255, 0.25) !important;
-        }
-        body.dark-mode .cards:hover>.card:not(:hover) {
-            filter: blur(6px);
-            opacity: 0.6;
-        }
-
         /* Dark mode — Experience card */
         body.dark-mode .experience-description p strong {
             color: #ccc !important;
@@ -2617,59 +2618,64 @@ body.dark-mode .faq-answer p {
         </div>
     </section>
 
-    <!-- Highlights Section -->
-    <section class="highlights">
+    <!-- AREAS OF IMPACT -->
+    <section class="highlights" id="areas-of-impact">
         <div class="container">
-            <div class="section-header">
-                <h2>Impact Highlights</h2>
-                <p>Hover over the cards to reveal details.</p>
+            <div class="section-header reveal">
+                <h2>Areas of Impact</h2>
+                <p>Infinite scroll • hover to pause • drag to explore</p>
             </div>
-            <div class="highlights-container">
-                <div class="cards">
-                    <div class="card">
-                        <i class="fas fa-server icon"></i>
-                        <p class="tip">99.99% Uptime</p>
-                        <ul class="highlight-description">
-                            <li>Engineered fault-tolerant architectures for mission-critical applications.</li>
+        </div>
+        <div class="infinite-scroll-container" id="infiniteScrollContainer">
+            <div class="cards-track" id="cardsTrack">
+                <!-- Card 1 -->
+                <div class="card">
+                    <i class="fas fa-server icon"></i>
+                    <p class="tip">99.99% Uptime</p>
+                    <ul class="highlight-description">
+							<li>Engineered fault-tolerant architectures for mission-critical applications.</li>
                             <li>Implemented blue-green deployments and zero-downtime upgrades.</li>
-                            <li>System uptime and resilience improved by 60% via active monitoring and scaling solutions.</li>
-                        </ul>
-                    </div>
-                    <div class="card">
-                        <i class="fas fa-rocket icon"></i>
-                        <p class="tip">10x Faster Deployments</p>
-                        <ul class="highlight-description">
-                            <li>Automated build, integration, and deployment flows for microservices.</li>
+                            <li>System uptime and resilience improved by 60% via active monitoring and scaling solutions.</li>                   
+							</ul>
+                </div>
+                <!-- Card 2 -->
+                <div class="card">
+                    <i class="fas fa-rocket icon"></i>
+                    <p class="tip">10x Faster Deployments</p>
+                    <ul class="highlight-description">
+							<li>Automated build, integration, and deployment flows for microservices.</li>
                             <li>Deployment duration reduced by 40% with automated rollout strategies.</li>
                             <li>Reduced manual intervention and human error in releases.</li>
-                        </ul>
-                    </div>
-                    <div class="card">
-                        <i class="fas fa-bolt icon"></i>
-                        <p class="tip">Cost Optimization</p>
-                        <ul class="highlight-description">
-                            <li>Infrastructure efficiency improved by 30% through optimized container use and auto-scaling.</li>
+                    </ul>
+                </div>
+                <!-- Card 3 -->
+                <div class="card">
+                    <i class="fas fa-bolt icon"></i>
+                    <p class="tip">Cost Optimisation</p>
+                    <ul class="highlight-description">
+                        <li>Infrastructure efficiency improved by 30% through optimized container use and auto-scaling.</li>
                             <li>Automated shutdown of non-prod workloads.</li>
                             <li>Built AWS Lambda workflows automating repetitive operational tasks, reducing manual effort by 40% and saving ~$2,000/month in cloud costs.</li>
-                        </ul>
-                    </div>
-                    <div class="card">
-                        <i class="fas fa-shield-alt icon"></i>
-                        <p class="tip">Security First</p>
-                        <ul class="highlight-description">
-                            <li>Implemented least-privilege IAM and automated security patching.</li>
+                    </ul>
+                </div>
+                <!-- Card 4 -->
+                <div class="card">
+                    <i class="fas fa-shield-alt icon"></i>
+                    <p class="tip">Security First</p>
+                    <ul class="highlight-description">
+                        <li>Implemented least-privilege IAM and automated security patching.</li>
                             <li>Enabled continuous compliance checks and audit trails.</li>
                             <li>Strengthened production security by replacing standard base images with Distroless containers, aligning with DevSecOps principles and reducing attack surface.</li>
-                        </ul>
-                    </div>
-                    <div class="card">
-                        <i class="fas fa-chart-line icon"></i>
-                        <p class="tip">Monitoring & Observability</p>
-                        <ul class="highlight-description">
-                            <li>Built an end-to-end observability stack combining metrics (Prometheus), logs (EFK stack), and tracing (OpenTelemetry + Jaeger), enabling deep visibility into both Kubernetes and VM workloads and improving system reliability.</li>
+                    </ul>
+                </div>
+                <!-- Card 5 -->
+                <div class="card">
+                    <i class="fas fa-chart-line icon"></i>
+                    <p class="tip">Observability Stack</p>
+                    <ul class="highlight-description">
+							<li>Built an end-to-end observability stack combining metrics (Prometheus), logs (EFK stack), and tracing (OpenTelemetry + Jaeger), enabling deep visibility into both Kubernetes and VM workloads and improving system reliability.</li>
                             <li>Ensured high system reliability through SLO-based monitoring and alerting policies.</li>
-                        </ul>
-                    </div>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -2679,7 +2685,7 @@ body.dark-mode .faq-answer p {
     <section class="education" id="education">
         <div class="container">
             <div class="section-header reveal">
-                <h2>Education</h2>
+                <h2>Academic Background</h2>
             </div>
             <!-- Both cards inside a single .cards-grid for consistent layout -->
             <div class="cards-grid fade-in">
@@ -2720,58 +2726,54 @@ body.dark-mode .faq-answer p {
         </div>
     </section>
 
- <!-- FAQ -->
-<section class="faq" id="faq">
-  <div class="container">
-    <div class="section-header reveal">
-      <h2>Frequently Asked Questions</h2>
-      <p>Answers to the questions people usually ask.</p>
-    </div>
+    <!-- FAQ -->
+    <section class="faq" id="faq">
+      <div class="container">
+        <div class="section-header reveal">
+          <h2>Frequently Asked Questions</h2>
+          <p>Answers to the questions people usually ask.</p>
+        </div>
 
-    <div class="faq-wrap">
-
-      <div class="faq-item reveal-child active">
-        <button class="faq-question">
-          <span>What services do you specialize in?</span>
-          <i class="fas fa-plus faq-icon"></i>
-        </button>
-        <div class="faq-answer">
-          <p>
-            I specialize in DevOps engineering, CI/CD automation, Kubernetes orchestration,
-            cloud infrastructure, observability, and production-grade deployment pipelines.
-          </p>
+        <div class="faq-wrap">
+          <div class="faq-item reveal-child active">
+            <button class="faq-question">
+              <span>What services do you specialize in?</span>
+              <i class="fas fa-plus faq-icon"></i>
+            </button>
+            <div class="faq-answer">
+              <p>
+                I specialize in DevOps engineering, CI/CD automation, Kubernetes orchestration,
+                cloud infrastructure, observability, and production-grade deployment pipelines.
+              </p>
+            </div>
+          </div>
+          <div class="faq-item reveal-child">
+            <button class="faq-question">
+              <span>Do you work with cloud-native platforms?</span>
+              <i class="fas fa-plus faq-icon"></i>
+            </button>
+            <div class="faq-answer">
+              <p>
+                Yes. I work with AWS, Docker, Kubernetes, Terraform, GitOps workflows,
+                monitoring stacks, and scalable cloud-native deployments.
+              </p>
+            </div>
+          </div>
+          <div class="faq-item reveal-child">
+            <button class="faq-question">
+              <span>Can you automate end-to-end deployment workflows?</span>
+              <i class="fas fa-plus faq-icon"></i>
+            </button>
+            <div class="faq-answer">
+              <p>
+                Yes. I build automated delivery pipelines covering build, test, packaging,
+                containerization, deployment, monitoring, and rollback strategies.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div class="faq-item reveal-child">
-        <button class="faq-question">
-          <span>Do you work with cloud-native platforms?</span>
-          <i class="fas fa-plus faq-icon"></i>
-        </button>
-        <div class="faq-answer">
-          <p>
-            Yes. I work with AWS, Docker, Kubernetes, Terraform, GitOps workflows,
-            monitoring stacks, and scalable cloud-native deployments.
-          </p>
-        </div>
-      </div>
-
-      <div class="faq-item reveal-child">
-        <button class="faq-question">
-          <span>Can you automate end-to-end deployment workflows?</span>
-          <i class="fas fa-plus faq-icon"></i>
-        </button>
-        <div class="faq-answer">
-          <p>
-            Yes. I build automated delivery pipelines covering build, test, packaging,
-            containerization, deployment, monitoring, and rollback strategies.
-          </p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
+    </section>
 
     <!-- Contact Section -->
     <section class="contact" id="contact">
@@ -3302,47 +3304,119 @@ body.dark-mode .faq-answer p {
             });
         }
 		
-				// Custom cursor movement
-document.addEventListener('mousemove', (e) => {
-  const cursor = document.querySelector('.custom-cursor');
-  if (cursor) {
-    cursor.style.setProperty('left', e.clientX + 'px', 'important');
-    cursor.style.setProperty('top', e.clientY + 'px', 'important');
-  }
-});
+        // Custom cursor movement
+        document.addEventListener('mousemove', (e) => {
+          const cursor = document.querySelector('.custom-cursor');
+          if (cursor) {
+            cursor.style.setProperty('left', e.clientX + 'px', 'important');
+            cursor.style.setProperty('top', e.clientY + 'px', 'important');
+          }
+        });
 
-// Change cursor on hoverable elements
-document.querySelectorAll('a, button, .skill-card, .cta-button, .highlight-card, .about-card, .experience-card').forEach(el => {
-  el.addEventListener('mouseenter', () => {
-    const cursor = document.querySelector('.custom-cursor');
-    if (cursor) {
-      cursor.style.setProperty('transform', 'translate(-50%, -50%) rotate(-15deg) scale(1.5)', 'important');
-    }
-  });
+        // Change cursor on hoverable elements
+        document.querySelectorAll('a, button, .skill-card, .cta-button, .highlight-card, .about-card, .experience-card, .card').forEach(el => {
+          el.addEventListener('mouseenter', () => {
+            const cursor = document.querySelector('.custom-cursor');
+            if (cursor) {
+              cursor.style.setProperty('transform', 'translate(-50%, -50%) rotate(-15deg) scale(1.5)', 'important');
+            }
+          });
 
-  el.addEventListener('mouseleave', () => {
-    const cursor = document.querySelector('.custom-cursor');
-    if (cursor) {
-      cursor.style.setProperty('transform', 'translate(-50%, -50%) rotate(-20deg) scale(1)', 'important');
-    }
-  });
-});
+          el.addEventListener('mouseleave', () => {
+            const cursor = document.querySelector('.custom-cursor');
+            if (cursor) {
+              cursor.style.setProperty('transform', 'translate(-50%, -50%) rotate(-20deg) scale(1)', 'important');
+            }
+          });
+        });
 
-// Adding FAQ elements
-document.querySelectorAll(".faq-question").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const item = btn.parentElement;
-      const isActive = item.classList.contains("active");
+        // Adding FAQ elements
+        document.querySelectorAll(".faq-question").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const item = btn.parentElement;
+              const isActive = item.classList.contains("active");
 
-      document.querySelectorAll(".faq-item").forEach((faq) => {
-        faq.classList.remove("active");
-      });
+              document.querySelectorAll(".faq-item").forEach((faq) => {
+                faq.classList.remove("active");
+              });
 
-      if (!isActive) {
-        item.classList.add("active");
-      }
-    });
-  });
+              if (!isActive) {
+                item.classList.add("active");
+              }
+            });
+        });
+
+        /* ─── INFINITE SCROLL FOR AREAS OF IMPACT ─────────── */
+        (function() {
+            const container = document.getElementById('infiniteScrollContainer');
+            const track = document.getElementById('cardsTrack');
+            if (!container || !track) return;
+
+            const originals = [...track.children];
+            // duplicate for seamless infinite loop
+            originals.forEach(card => track.appendChild(card.cloneNode(true)));
+            originals.forEach(card => track.appendChild(card.cloneNode(true)));
+
+            let autoScroll = null;
+            let paused = false;
+            let isDown = false;
+            let startX = 0;
+            let scrollLeft = 0;
+            const speed = 1.8;
+
+            function tick() {
+                if (paused) return;
+                container.scrollLeft += speed;
+
+                const third = track.scrollWidth / 3;
+                if (container.scrollLeft >= third * 2) {
+                    container.scrollLeft = third;
+                }
+            }
+
+            function start() {
+                stop();
+                autoScroll = setInterval(tick, 16);
+            }
+
+            function stop() {
+                if (autoScroll) clearInterval(autoScroll);
+                autoScroll = null;
+            }
+
+            container.addEventListener('mouseenter', () => { paused = true; });
+            container.addEventListener('mouseleave', () => { paused = false; });
+            container.addEventListener('mousedown', (e) => {
+                isDown = true;
+                paused = true;
+                container.classList.add('dragging');
+                startX = e.pageX - container.offsetLeft;
+                scrollLeft = container.scrollLeft;
+            });
+            container.addEventListener('mouseleave', () => {
+                isDown = false;
+                container.classList.remove('dragging');
+            });
+            container.addEventListener('mouseup', () => {
+                isDown = false;
+                paused = false;
+                container.classList.remove('dragging');
+            });
+            container.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - container.offsetLeft;
+                const walk = (x - startX) * 1.4;
+                container.scrollLeft = scrollLeft - walk;
+            });
+
+            // touch support
+            container.addEventListener('touchstart', () => paused = true, { passive: true });
+            container.addEventListener('touchend', () => paused = false, { passive: true });
+
+            container.scrollLeft = 1;
+            start();
+        })();
     </script>
 </body>
 </html>
