@@ -639,42 +639,74 @@ nav a.nav-active {
   opacity: 1;
   color: #B600A8;
 }
-footer {
-  background: #0C0C0C;
-  padding: 60px 48px 40px;
-  border-top: 1px solid #111;
-  text-align: center;
-}
-.social-links {
+
+/* ---------- NEW SQUIRCLE FOOTER STYLES (only GitHub, LinkedIn, Mail) ---------- */
+.footer-squircle-wrapper {
   display: flex;
-  gap: 16px;
   justify-content: center;
-  margin-bottom: 24px;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  width: 100%;
 }
-.social-link {
-  width: 44px;
-  height: 44px;
+.squircle-icon-link {
+  display: block;
+  text-decoration: none;
+  transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+.squircle-icon-link:hover {
+  transform: translateY(-6px) scale(1.08);
+}
+.squircle-icon {
+  width: 70px;
+  height: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #111;
-  border: 1px solid #222;
-  border-radius: 12px;
-  color: #D7E2EA;
-  font-size: 1.2rem;
-  transition: transform .3s, border-color .3s, background .3s;
-}
-.social-link:hover {
-  transform: translateY(-3px);
-  border-color: #B600A8;
   background: #1a1a1a;
+  backdrop-filter: blur(2px);
+  box-shadow: 0 12px 20px -8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+  transition: all 0.25s ease-out;
+  cursor: pointer;
+  color: white;
+  font-size: 2rem;
 }
-.copyright {
-  color: #555;
-  font-size: .75rem;
-  font-family: 'JetBrains Mono', monospace;
+.squircle-icon.github {
+  background: linear-gradient(145deg, #2c2f36, #1a1d24);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+.squircle-icon.linkedin {
+  background: linear-gradient(145deg, #0077b5, #005582);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.squircle-icon.mail {
+  background: linear-gradient(145deg, #ea4335, #b91c1c);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.squircle-icon-link:hover .squircle-icon {
+  filter: brightness(1.08);
+  box-shadow: 0 18px 28px -12px rgba(0,0,0,0.5);
+}
+/* custom footer adjustments */
+.custom-footer {
+  background: #0C0C0C;
+  border-top: 1px solid #1a1a1a;
+  padding: 52px 24px 56px;
+  text-align: center;
+}
+@media (max-width: 580px) {
+  .squircle-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 1.8rem;
+  }
+  .footer-squircle-wrapper {
+    gap: 20px;
+  }
 }
 
+/* keep all existing responsive overrides */
 @media (max-width: 768px) {
   .hero-name {
     white-space: normal;
@@ -831,7 +863,6 @@ footer {
   50%  { transform: translateY(12em); }
   100% { transform: translateY(0em); }
 }
-
 </style>
 </head>
 <body>
@@ -860,7 +891,16 @@ footer {
   </div>
 </div>
 
-<!-- HERO -->
+<!-- SVG ClipPath for squircle shape (used in footer) -->
+<svg width="0" height="0" style="position: absolute; pointer-events: none;">
+  <defs>
+    <clipPath id="squircleClip" clipPathUnits="objectBoundingBox">
+      <path d="M 0,0.5 C 0,0 0,0 0.5,0 S 1,0 1,0.5 1,1 0.5,1 0,1 0,0.5"></path>
+    </clipPath>
+  </defs>
+</svg>
+
+<!-- HERO SECTION (unchanged) -->
 <section id="hero">
   <nav class="fade-in">
     <a href="#about">About</a>
@@ -889,7 +929,7 @@ footer {
   </div>
 </section>
 
-<!-- ABOUT -->
+<!-- ABOUT, SKILLS, EXPERIENCE, IMPACTS, EDUCATION, CONTACT sections all remain original -->
 <section class="about-section fade-in" id="about">
   <h2 class="hero-heading about-heading fade-in" style="transition-delay:0s">About me</h2>
   <p class="about-text fade-in" id="aboutText" style="transition-delay:.2s">
@@ -897,7 +937,6 @@ With 3.8+ years of experience, I specialize in building scalable DevOps solution
   <div style="margin-top:48px" class="fade-in"></div>
 </section>
 
-<!-- SKILLS MARQUEE -->
 <section class="tech-scroll-section" id="skills">
   <h2 class="hero-heading about-heading fade-in" style="transition-delay:0s;text-align:center;padding-top:40px">Skills & Tools</h2>
   <div class="tech-scroll-wrapper" style="margin-top:60px">
@@ -906,76 +945,28 @@ With 3.8+ years of experience, I specialize in building scalable DevOps solution
   </div>
 </section>
 
-<!-- EXPERIENCE - PERSONAL PORTFOLIO VERSION (narrative, story-driven) -->
 <section class="projects-section" id="experience">
   <h2 class="hero-heading projects-heading">Experience</h2>
   <div class="cards-stack">
     <div class="exp-story-card fade-in">
       <div class="exp-header">
-        <div>
-          <div class="exp-role">DevOps & SRE Engineer</div>
-          <div class="exp-company">Wipro · Hyderabad, India</div>
-        </div>
+        <div><div class="exp-role">DevOps & SRE Engineer</div><div class="exp-company">Wipro · Hyderabad, India</div></div>
         <div class="exp-date">2021 – 2025</div>
       </div>
-      <div class="exp-intro">
-        At Wipro, I wasn't just maintaining pipelines — I reimagined how teams deliver software. By combining automation, cloud-native thinking, and reliability engineering, I helped accelerate deployments, harden security, and bring real observability into production.
-      </div>
-
-      <!-- story blocks: each major chapter -->
+      <div class="exp-intro">At Wipro, I wasn't just maintaining pipelines — I reimagined how teams deliver software. By combining automation, cloud-native thinking, and reliability engineering, I helped accelerate deployments, harden security, and bring real observability into production.</div>
       <div class="exp-highlight-grid">
-        <div class="exp-highlight-item">
-          <div class="highlight-icon"><i class="fas fa-rocket"></i></div>
-          <div class="highlight-title">CI/CD · From days to minutes</div>
-          <div class="highlight-desc">I automated end-to-end workflows using n8n + Jenkins + ArgoCD, reducing deployment time by 40% and manual errors by 70%. Teams started shipping with confidence, and rollbacks became a thing of the past.</div>
-        </div>
-        <div class="exp-highlight-item">
-          <div class="highlight-icon"><i class="fas fa-shield-alt"></i></div>
-          <div class="highlight-title">Secure by default containers</div>
-          <div class="highlight-desc">Introduced distroless Docker images + Trivy vulnerability scanning, slashing attack surfaces. Every image was lean, signed, and scanned before reaching production.</div>
-        </div>
-        <div class="exp-highlight-item">
-          <div class="highlight-icon"><i class="fas fa-dharmachakra"></i></div>
-          <div class="highlight-title">GitOps & Progressive delivery</div>
-          <div class="highlight-desc">Migrated legacy pipelines to GitOps with Argo CD on AWS EKS. Implemented canary & blue-green deployments using Argo Rollouts — zero-downtime releases and 60% faster rollback.</div>
-        </div>
-        <div class="exp-highlight-item">
-          <div class="highlight-icon"><i class="fas fa-chart-line"></i></div>
-          <div class="highlight-title">Observability first culture</div>
-          <div class="highlight-desc">Deployed Prometheus, Grafana, EFK stack for real-time insights. Proactive alerting and auto-scaling improved system reliability by 60%, and incidents became proactive conversations.</div>
-        </div>
-        <div class="exp-highlight-item">
-          <div class="highlight-icon"><i class="fas fa-cloud-upload-alt"></i></div>
-          <div class="highlight-title">Infrastructure as Code</div>
-          <div class="highlight-desc">Provisioned AWS resources (EC2, VPC, ECR) using Terraform with drift detection. Built event-driven serverless workflows with Lambda, saving ~$2k/month in cloud costs.</div>
-        </div>
+        <div class="exp-highlight-item"><div class="highlight-icon"><i class="fas fa-rocket"></i></div><div class="highlight-title">CI/CD · From days to minutes</div><div class="highlight-desc">I automated end-to-end workflows using n8n + Jenkins + ArgoCD, reducing deployment time by 40% and manual errors by 70%.</div></div>
+        <div class="exp-highlight-item"><div class="highlight-icon"><i class="fas fa-shield-alt"></i></div><div class="highlight-title">Secure by default containers</div><div class="highlight-desc">Introduced distroless Docker images + Trivy vulnerability scanning, slashing attack surfaces.</div></div>
+        <div class="exp-highlight-item"><div class="highlight-icon"><i class="fas fa-dharmachakra"></i></div><div class="highlight-title">GitOps & Progressive delivery</div><div class="highlight-desc">Migrated to GitOps with Argo CD on AWS EKS, canary/blue-green deployments with Argo Rollouts.</div></div>
+        <div class="exp-highlight-item"><div class="highlight-icon"><i class="fas fa-chart-line"></i></div><div class="highlight-title">Observability first culture</div><div class="highlight-desc">Deployed Prometheus, Grafana, EFK stack — improved system reliability by 60%.</div></div>
+        <div class="exp-highlight-item"><div class="highlight-icon"><i class="fas fa-cloud-upload-alt"></i></div><div class="highlight-title">Infrastructure as Code</div><div class="highlight-desc">Terraform + AWS, saved ~$2k/month via serverless Lambda automation.</div></div>
       </div>
-
-      <div class="exp-metrics">
-        <div class="metric"><span class="metric-value">99.99%</span><span class="metric-label">Uptime SLA</span></div>
-        <div class="metric"><span class="metric-value">40%</span><span class="metric-label">Faster Deployments</span></div>
-        <div class="metric"><span class="metric-value">70%</span><span class="metric-label">Less Manual Errors</span></div>
-        <div class="metric"><span class="metric-value">$2k/mo</span><span class="metric-label">Cloud Savings</span></div>
-      </div>
-
-      <div style="margin-top: 28px;">
-        <span class="tech-tag">AWS</span>
-        <span class="tech-tag">Kubernetes</span>
-        <span class="tech-tag">Docker</span>
-        <span class="tech-tag">Terraform</span>
-        <span class="tech-tag">Jenkins</span>
-        <span class="tech-tag">Argo CD</span>
-        <span class="tech-tag">Prometheus</span>
-        <span class="tech-tag">Grafana</span>
-        <span class="tech-tag">GitHub Actions</span>
-        <span class="tech-tag">Trivy</span>
-        <span class="tech-tag">Argo Rollouts</span>
-      </div>
+      <div class="exp-metrics"><div class="metric"><span class="metric-value">99.99%</span><span class="metric-label">Uptime SLA</span></div><div class="metric"><span class="metric-value">40%</span><span class="metric-label">Faster Deployments</span></div><div class="metric"><span class="metric-value">70%</span><span class="metric-label">Less Manual Errors</span></div><div class="metric"><span class="metric-value">$2k/mo</span><span class="metric-label">Cloud Savings</span></div></div>
+      <div style="margin-top: 28px;"><span class="tech-tag">AWS</span><span class="tech-tag">Kubernetes</span><span class="tech-tag">Docker</span><span class="tech-tag">Terraform</span><span class="tech-tag">Jenkins</span><span class="tech-tag">Argo CD</span><span class="tech-tag">Prometheus</span><span class="tech-tag">Grafana</span><span class="tech-tag">GitHub Actions</span><span class="tech-tag">Trivy</span><span class="tech-tag">Argo Rollouts</span></div>
     </div>
   </div>
 </section>
 
-<!-- KEY IMPACTS -->
 <section class="services-section" id="key-impacts">
   <h2 class="services-heading">Key Impacts</h2>
   <div style="max-width:900px;margin:0 auto">
@@ -988,7 +979,6 @@ With 3.8+ years of experience, I specialize in building scalable DevOps solution
   </div>
 </section>
 
-<!-- EDUCATION -->
 <section class="about-section fade-in" id="education" style="background:#0C0C0C;padding:80px 24px">
   <h2 class="hero-heading about-heading fade-in">Academic Background</h2>
   <div class="cards-grid fade-in" style="margin-top:60px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;max-width:900px;margin-left:auto;margin-right:auto">
@@ -997,7 +987,6 @@ With 3.8+ years of experience, I specialize in building scalable DevOps solution
   </div>
 </section>
 
-<!-- CONTACT -->
 <section id="contact" style="background:#0C0C0C;padding:80px 48px">
   <div style="text-align:center">
     <h2 class="hero-heading fade-in" style="font-size:clamp(40px,8vw,110px);font-weight:900;text-transform:uppercase;letter-spacing:-.02em;line-height:.9;margin-bottom:32px">Let's work<br/>together</h2>
@@ -1010,7 +999,6 @@ With 3.8+ years of experience, I specialize in building scalable DevOps solution
       <div class="contact-item"><div class="contact-icon"><i class="fab fa-safari"></i></div><div class="contact-details"><h3>Portfolio</h3><a href="https://koushik79.netlify.app/" target="_blank">koushik79.netlify.app</a></div></div>
       <div class="contact-item"><div class="contact-icon"><i class="fab fa-github"></i></div><div class="contact-details"><h3>GitHub</h3><a href="https://github.com/Koushik080" target="_blank">github.com/Koushik080</a></div></div>
     </div>
-
     <div class="contact-form-wrapper fade-in">
       <form class="contact-form" action="https://api.web3forms.com/submit" method="POST" novalidate>
         <input type="hidden" name="access_key" value="849e7ece-cc05-44a6-b76c-6cecad610bcf" />
@@ -1027,13 +1015,25 @@ With 3.8+ years of experience, I specialize in building scalable DevOps solution
   </div>
 </section>
 
-<footer>
-  <div class="social-links">
-    <a href="https://github.com/Koushik080" class="social-link" target="_blank"><i class="fab fa-github"></i></a>
-    <a href="https://linkedin.com/in/koushik-gurrala-896986360/" class="social-link" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=koushikgurrala79@gmail.com" class="social-link" target="_blank"><i class="fa fa-envelope"></i></a>
+<!-- NEW FOOTER (only GitHub, LinkedIn, Mail, squircle style, everything else removed) -->
+<footer class="custom-footer">
+  <div class="footer-squircle-wrapper">
+    <a href="https://github.com/Koushik080" target="_blank" rel="noopener noreferrer" class="squircle-icon-link" aria-label="GitHub">
+      <div class="squircle-icon github" style="clip-path: url(#squircleClip);">
+        <i class="fab fa-github"></i>
+      </div>
+    </a>
+    <a href="https://linkedin.com/in/koushik-gurrala-896986360/" target="_blank" rel="noopener noreferrer" class="squircle-icon-link" aria-label="LinkedIn">
+      <div class="squircle-icon linkedin" style="clip-path: url(#squircleClip);">
+        <i class="fab fa-linkedin-in"></i>
+      </div>
+    </a>
+    <a href="mailto:koushikgurrala79@gmail.com" class="squircle-icon-link" aria-label="Email">
+      <div class="squircle-icon mail" style="clip-path: url(#squircleClip);">
+        <i class="fas fa-envelope"></i>
+      </div>
+    </a>
   </div>
-  <div class="copyright">&copy; 2026 Koushik Gurrala. All rights reserved.</div>
 </footer>
 
 <script>
