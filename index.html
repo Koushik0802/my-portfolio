@@ -6,6 +6,10 @@
 <title>Koushik Gurrala — DevOps & SRE</title>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<!-- GSAP + ScrollTrigger + Lenis (Premium Smooth Scroll & Animation Engine) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <style>
 * {
   box-sizing: border-box;
@@ -16,7 +20,7 @@ html, body {
   background: #0C0C0C;
   font-family: 'Kanit', sans-serif;
   overflow-x: hidden;
-  scroll-behavior: smooth;
+  scroll-behavior: auto; /* Lenis handles smooth scroll */
 }
 body {
   overflow-x: hidden;
@@ -75,14 +79,11 @@ body {
 .live-btn:hover {
   background: rgba(215, 226, 234, .1);
 }
+/* GSAP will fully control fade-in animations — disable CSS transitions to prevent conflicts */
 .fade-in {
+  transition: none !important;
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity .7s cubic-bezier(.25, .1, .25, 1), transform .7s cubic-bezier(.25, .1, .25, 1);
-}
-.fade-in.visible {
-  opacity: 1;
-  transform: translateY(0);
 }
 section {
   position: relative;
@@ -289,7 +290,6 @@ nav a:hover {
   flex-direction: column;
   gap: 32px;
 }
-/* new personal portfolio experience card */
 .exp-story-card {
   background: #0C0C0C;
   border: 2px solid #D7E2EA;
@@ -639,7 +639,6 @@ nav a.nav-active {
   opacity: 1;
   color: #B600A8;
 }
-
 /* ---------- SQUIRCLE FOOTER (reduced size, with copyright) ---------- */
 .footer-squircle-wrapper {
   display: flex;
@@ -715,7 +714,6 @@ nav a.nav-active {
     font-size: 0.65rem;
   }
 }
-
 /* keep existing responsive overrides */
 @media (max-width: 768px) {
   .hero-name {
@@ -765,7 +763,7 @@ nav a.nav-active {
     margin-top: 20px;
   }
 }
-/* ===== PAGE LOADER ===== */
+/* ===== PAGE LOADER (from second file) ===== */
 #pageLoader {
   position: fixed;
   inset: 0;
@@ -876,7 +874,7 @@ nav a.nav-active {
 </style>
 </head>
 <body>
-<!-- PAGE LOADER -->
+<!-- PAGE LOADER (exactly from second file) -->
 <div id="pageLoader">
   <div class="main">
     <div class="up">
@@ -901,7 +899,6 @@ nav a.nav-active {
   </div>
 </div>
 
-<!-- SVG ClipPath for squircle shape -->
 <svg width="0" height="0" style="position: absolute; pointer-events: none;">
   <defs>
     <clipPath id="squircleClip" clipPathUnits="objectBoundingBox">
@@ -910,7 +907,7 @@ nav a.nav-active {
   </defs>
 </svg>
 
-<!-- HERO SECTION -->
+<!-- HERO SECTION (unchanged premium layout) -->
 <section id="hero">
   <nav class="fade-in">
     <a href="#about">About</a>
@@ -924,105 +921,45 @@ nav a.nav-active {
     <h1 class="hero-heading hero-name">Hi, i'm Koushik</h1>
   </div>
   <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:32px;margin-top:auto;padding:0 24px 60px">
-    <p class="fade-in" style="color:#D7E2EA;font-weight:400;text-align:center;line-height:1.7;font-size:clamp(1rem,1.6vw,1.25rem);max-width:600px;transition-delay:.35s">
-      A DevOps & SRE engineer driven by building reliable, scalable, and secure cloud systems
-    </p>
+    <p class="fade-in" style="color:#D7E2EA;font-weight:400;text-align:center;line-height:1.7;font-size:clamp(1rem,1.6vw,1.25rem);max-width:600px;transition-delay:.35s">A DevOps & SRE engineer driven by building reliable, scalable, and secure cloud systems</p>
     <div class="fade-in" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;transition-delay:.5s">
       <button class="contact-btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Hire Me</button>
-      <label class="contact-btn" style="cursor:pointer;display:inline-flex;align-items:center;justify-content:center">
-        <input type="checkbox" id="downloadToggle" style="display:none">
-        Download Resume
-      </label>
+      <label class="contact-btn" style="cursor:pointer;display:inline-flex;align-items:center;justify-content:center"><input type="checkbox" id="downloadToggle" style="display:none">Download Resume</label>
     </div>
   </div>
 </section>
 
-<!-- ABOUT, SKILLS, EXPERIENCE, IMPACTS, EDUCATION, CONTACT sections (unchanged functional content) -->
+<!-- about, skills, experience, impacts, education, contact sections (identical to premium version) -->
 <section class="about-section fade-in" id="about">
   <h2 class="hero-heading about-heading fade-in" style="transition-delay:0s">About me</h2>
-  <p class="about-text fade-in" id="aboutText" style="transition-delay:.2s">
-With 3.8+ years of experience, I specialize in building scalable DevOps solutions on AWS using CI/CD automation, container orchestration, and infrastructure as code with Jenkins, GitHub Actions, Argo CD, and Terraform.I've reduced deployment errors by 70% and accelerated release cycles through intelligent automation and robust pipeline design. My expertise spans Kubernetes, Docker, and progressive delivery strategies like canary and blue-green deployments.<br><br>I focus on building secure, cost-efficient cloud environments powered by AI-driven monitoring using Prometheus, Grafana, and comprehensive observability stacks.</p>
+  <p class="about-text fade-in" id="aboutText" style="transition-delay:.2s">With 3.8+ years of experience, I specialize in building scalable DevOps solutions on AWS using CI/CD automation, container orchestration, and infrastructure as code with Jenkins, GitHub Actions, Argo CD, and Terraform.I've reduced deployment errors by 70% and accelerated release cycles through intelligent automation and robust pipeline design. My expertise spans Kubernetes, Docker, and progressive delivery strategies like canary and blue-green deployments.<br><br>I focus on building secure, cost-efficient cloud environments powered by AI-driven monitoring using Prometheus, Grafana, and comprehensive observability stacks.</p>
 </section>
 
 <section class="tech-scroll-section" id="skills">
   <h2 class="hero-heading about-heading fade-in" style="transition-delay:0s;text-align:center;padding-top:40px">Skills & Tools</h2>
-  <div class="tech-scroll-wrapper" style="margin-top:60px">
-    <div class="tech-scroll-row"><div class="tech-scroll-inner" id="scrollInner1"></div></div>
-    <div class="tech-scroll-row"><div class="tech-scroll-inner" id="scrollInner2"></div></div>
-  </div>
+  <div class="tech-scroll-wrapper" style="margin-top:60px"><div class="tech-scroll-row"><div class="tech-scroll-inner" id="scrollInner1"></div></div><div class="tech-scroll-row"><div class="tech-scroll-inner" id="scrollInner2"></div></div></div>
 </section>
 
 <section class="projects-section" id="experience">
   <h2 class="hero-heading projects-heading">Experience</h2>
-  <div class="cards-stack">
-    <div class="exp-story-card fade-in">
-      <div class="exp-header">
-        <div><div class="exp-role">DevOps & SRE Engineer</div><div class="exp-company">Wipro · Hyderabad, India</div></div>
-        <div class="exp-date">2021 – 2025</div>
-      </div>
-      <div class="exp-intro">At Wipro, I wasn't just maintaining pipelines — I reimagined how teams deliver software. By combining automation, cloud-native thinking, and reliability engineering, I helped accelerate deployments, harden security, and bring real observability into production.</div>
-      <div class="exp-highlight-grid">
-        <div class="exp-highlight-item"><div class="highlight-icon"><i class="fas fa-rocket"></i></div><div class="highlight-title">CI/CD · From days to minutes</div><div class="highlight-desc">I automated end-to-end workflows using n8n + Jenkins + ArgoCD, reducing deployment time by 40% and manual errors by 70%.</div></div>
-        <div class="exp-highlight-item"><div class="highlight-icon"><i class="fas fa-shield-alt"></i></div><div class="highlight-title">Secure by default containers</div><div class="highlight-desc">Introduced distroless Docker images + Trivy vulnerability scanning, slashing attack surfaces.</div></div>
-        <div class="exp-highlight-item"><div class="highlight-icon"><i class="fas fa-dharmachakra"></i></div><div class="highlight-title">GitOps & Progressive delivery</div><div class="highlight-desc">Migrated to GitOps with Argo CD on AWS EKS, canary/blue-green deployments with Argo Rollouts.</div></div>
-        <div class="exp-highlight-item"><div class="highlight-icon"><i class="fas fa-chart-line"></i></div><div class="highlight-title">Observability first culture</div><div class="highlight-desc">Deployed Prometheus, Grafana, EFK stack — improved system reliability by 60%.</div></div>
-        <div class="exp-highlight-item"><div class="highlight-icon"><i class="fas fa-cloud-upload-alt"></i></div><div class="highlight-title">Infrastructure as Code</div><div class="highlight-desc">Terraform + AWS, saved ~$2k/month via serverless Lambda automation.</div></div>
-      </div>
-      <div class="exp-metrics"><div class="metric"><span class="metric-value">99.99%</span><span class="metric-label">Uptime SLA</span></div><div class="metric"><span class="metric-value">40%</span><span class="metric-label">Faster Deployments</span></div><div class="metric"><span class="metric-value">70%</span><span class="metric-label">Less Manual Errors</span></div><div class="metric"><span class="metric-value">$2k/mo</span><span class="metric-label">Cloud Savings</span></div></div>
-      <div style="margin-top: 28px;"><span class="tech-tag">AWS</span><span class="tech-tag">Kubernetes</span><span class="tech-tag">Docker</span><span class="tech-tag">Terraform</span><span class="tech-tag">Jenkins</span><span class="tech-tag">Argo CD</span><span class="tech-tag">Prometheus</span><span class="tech-tag">Grafana</span><span class="tech-tag">GitHub Actions</span><span class="tech-tag">Trivy</span><span class="tech-tag">Argo Rollouts</span></div>
-    </div>
-  </div>
+  <div class="cards-stack"><div class="exp-story-card fade-in"><div class="exp-header"><div><div class="exp-role">DevOps & SRE Engineer</div><div class="exp-company">Wipro · Hyderabad, India</div></div><div class="exp-date">2021 – 2025</div></div><div class="exp-intro">At Wipro, I wasn't just maintaining pipelines — I reimagined how teams deliver software. By combining automation, cloud-native thinking, and reliability engineering, I helped accelerate deployments, harden security, and bring real observability into production.</div><div class="exp-highlight-grid"><div class="exp-highlight-item"><div class="highlight-icon"><i class="fas fa-rocket"></i></div><div class="highlight-title">CI/CD · From days to minutes</div><div class="highlight-desc">I automated end-to-end workflows using n8n + Jenkins + ArgoCD, reducing deployment time by 40% and manual errors by 70%.</div></div><div class="exp-highlight-item"><div class="highlight-icon"><i class="fas fa-shield-alt"></i></div><div class="highlight-title">Secure by default containers</div><div class="highlight-desc">Introduced distroless Docker images + Trivy vulnerability scanning, slashing attack surfaces.</div></div><div class="exp-highlight-item"><div class="highlight-icon"><i class="fas fa-dharmachakra"></i></div><div class="highlight-title">GitOps & Progressive delivery</div><div class="highlight-desc">Migrated to GitOps with Argo CD on AWS EKS, canary/blue-green deployments with Argo Rollouts.</div></div><div class="exp-highlight-item"><div class="highlight-icon"><i class="fas fa-chart-line"></i></div><div class="highlight-title">Observability first culture</div><div class="highlight-desc">Deployed Prometheus, Grafana, EFK stack — improved system reliability by 60%.</div></div><div class="exp-highlight-item"><div class="highlight-icon"><i class="fas fa-cloud-upload-alt"></i></div><div class="highlight-title">Infrastructure as Code</div><div class="highlight-desc">Terraform + AWS, saved ~$2k/month via serverless Lambda automation.</div></div></div><div class="exp-metrics"><div class="metric"><span class="metric-value">99.99%</span><span class="metric-label">Uptime SLA</span></div><div class="metric"><span class="metric-value">40%</span><span class="metric-label">Faster Deployments</span></div><div class="metric"><span class="metric-value">70%</span><span class="metric-label">Less Manual Errors</span></div><div class="metric"><span class="metric-value">$2k/mo</span><span class="metric-label">Cloud Savings</span></div></div><div style="margin-top: 28px;"><span class="tech-tag">AWS</span><span class="tech-tag">Kubernetes</span><span class="tech-tag">Docker</span><span class="tech-tag">Terraform</span><span class="tech-tag">Jenkins</span><span class="tech-tag">Argo CD</span><span class="tech-tag">Prometheus</span><span class="tech-tag">Grafana</span><span class="tech-tag">GitHub Actions</span><span class="tech-tag">Trivy</span><span class="tech-tag">Argo Rollouts</span></div></div></div>
 </section>
 
 <section class="services-section" id="key-impacts">
   <h2 class="services-heading">Key Impacts</h2>
-  <div style="max-width:900px;margin:0 auto">
-    <div class="service-item fade-in"><div class="service-num">01</div><div class="service-content"><div class="service-name">99.99% Uptime</div><div class="service-desc">Engineered fault-tolerant architectures with zero-downtime upgrades and 60% reliability improvement.</div></div></div>
-    <div class="service-item fade-in"><div class="service-num">02</div><div class="service-content"><div class="service-name">10x Faster Deployments</div><div class="service-desc">Automated CI/CD flows, reduced deployment time by 40% and manual errors by 70%.</div></div></div>
-    <div class="service-item fade-in"><div class="service-num">03</div><div class="service-content"><div class="service-name">Kubernetes & GitOps</div><div class="service-desc">Canary/blue-green rollouts with Argo Rollouts, reducing rollback time by 60%.</div></div></div>
-    <div class="service-item fade-in"><div class="service-num">04</div><div class="service-content"><div class="service-name">Cost Optimisation</div><div class="service-desc">Lambda-based automation saved ~$2,000/month, reduced manual effort by 40%.</div></div></div>
-    <div class="service-item fade-in"><div class="service-num">05</div><div class="service-content"><div class="service-name">Security First</div><div class="service-desc">Distroless containers + least-privilege IAM, DevSecOps aligned image scanning.</div></div></div>
-    <div class="service-item fade-in"><div class="service-num">06</div><div class="service-content"><div class="service-name">Monitoring & Observability</div><div class="service-desc">Prometheus/Grafana/EFK stack delivering real-time insights and 60% reliability gain.</div></div></div>
-  </div>
+  <div style="max-width:900px;margin:0 auto"><div class="service-item fade-in"><div class="service-num">01</div><div class="service-content"><div class="service-name">99.99% Uptime</div><div class="service-desc">Engineered fault-tolerant architectures with zero-downtime upgrades and 60% reliability improvement.</div></div></div><div class="service-item fade-in"><div class="service-num">02</div><div class="service-content"><div class="service-name">10x Faster Deployments</div><div class="service-desc">Automated CI/CD flows, reduced deployment time by 40% and manual errors by 70%.</div></div></div><div class="service-item fade-in"><div class="service-num">03</div><div class="service-content"><div class="service-name">Kubernetes & GitOps</div><div class="service-desc">Canary/blue-green rollouts with Argo Rollouts, reducing rollback time by 60%.</div></div></div><div class="service-item fade-in"><div class="service-num">04</div><div class="service-content"><div class="service-name">Cost Optimisation</div><div class="service-desc">Lambda-based automation saved ~$2,000/month, reduced manual effort by 40%.</div></div></div><div class="service-item fade-in"><div class="service-num">05</div><div class="service-content"><div class="service-name">Security First</div><div class="service-desc">Distroless containers + least-privilege IAM, DevSecOps aligned image scanning.</div></div></div><div class="service-item fade-in"><div class="service-num">06</div><div class="service-content"><div class="service-name">Monitoring & Observability</div><div class="service-desc">Prometheus/Grafana/EFK stack delivering real-time insights and 60% reliability gain.</div></div></div></div>
 </section>
 
 <section class="about-section fade-in" id="education" style="background:#0C0C0C;padding:80px 24px">
   <h2 class="hero-heading about-heading fade-in">Academic Background</h2>
-  <div class="cards-grid fade-in" style="margin-top:60px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;max-width:900px;margin-left:auto;margin-right:auto">
-    <div style="background:#111;border:1px solid #222;border-radius:20px;padding:32px"><div style="font-size:clamp(1.4rem,3vw,1.8rem);font-weight:700;color:#D7E2EA;margin-bottom:8px">MTech</div><div style="font-size:clamp(1rem,2vw,1.2rem);font-weight:500;color:#B600A8;margin-bottom:16px">BITS Pilani</div><div style="color:#888;font-size:.95rem;line-height:1.6"><strong>Pursuing:</strong> 2025<br><strong>Coursework:</strong> OS, Cloud Computing, AI.</div></div>
-    <div style="background:#111;border:1px solid #222;border-radius:20px;padding:32px"><div style="font-size:clamp(1.4rem,3vw,1.8rem);font-weight:700;color:#D7E2EA;margin-bottom:8px">Bachelor of Computer Science</div><div style="font-size:clamp(1rem,2vw,1.2rem);font-weight:500;color:#B600A8;margin-bottom:16px">Andhra University</div><div style="color:#888;font-size:.95rem;line-height:1.6"><strong>Graduated:</strong> 2021<br><strong>Coursework:</strong> Algorithms, OS, Cloud Computing, Data Structures.</div></div>
-  </div>
+  <div class="cards-grid fade-in" style="margin-top:60px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;max-width:900px;margin-left:auto;margin-right:auto"><div style="background:#111;border:1px solid #222;border-radius:20px;padding:32px"><div style="font-size:clamp(1.4rem,3vw,1.8rem);font-weight:700;color:#D7E2EA;margin-bottom:8px">MTech</div><div style="font-size:clamp(1rem,2vw,1.2rem);font-weight:500;color:#B600A8;margin-bottom:16px">BITS Pilani</div><div style="color:#888;font-size:.95rem;line-height:1.6"><strong>Pursuing:</strong> 2025<br><strong>Coursework:</strong> OS, Cloud Computing, AI.</div></div><div style="background:#111;border:1px solid #222;border-radius:20px;padding:32px"><div style="font-size:clamp(1.4rem,3vw,1.8rem);font-weight:700;color:#D7E2EA;margin-bottom:8px">Bachelor of Computer Science</div><div style="font-size:clamp(1rem,2vw,1.2rem);font-weight:500;color:#B600A8;margin-bottom:16px">Andhra University</div><div style="color:#888;font-size:.95rem;line-height:1.6"><strong>Graduated:</strong> 2021<br><strong>Coursework:</strong> Algorithms, OS, Cloud Computing, Data Structures.</div></div></div>
 </section>
 
 <section id="contact" style="background:#0C0C0C;padding:80px 48px">
-  <div style="text-align:center">
-    <h2 class="hero-heading fade-in" style="font-size:clamp(40px,8vw,110px);font-weight:900;text-transform:uppercase;letter-spacing:-.02em;line-height:.9;margin-bottom:32px">Let's work<br/>together</h2>
-    <p class="fade-in" style="color:#888;font-size:1rem;margin-bottom:40px">Open to DevOps, Cloud, and SRE roles. Based in Visakhapatnam, India.</p>
-    <div class="contact-info fade-in">
-      <div class="contact-item"><div class="contact-icon"><i class="fas fa-phone"></i></div><div class="contact-details"><h3>Phone</h3><a href="tel:+917207076532">+91 7207 076 532</a></div></div>
-      <div class="contact-item"><div class="contact-icon"><i class="fas fa-location-arrow"></i></div><div class="contact-details"><h3>Location</h3><a href="https://www.google.com/maps/place/Visakhapatnam,+Andhra+Pradesh/@17.6868159,83.2184815,3a,75y,90t/data=!3m8!1e2!3m6!1sCIHM0ogKEICAgICB1uCBVg!2e10!3e12!6shttps:%2F%2Flh3.googleusercontent.com%2Fgps-cs-s%2FAPNQkAFHfjCHKo7Z1vQ9gI8D9H93BSNOeD_Occ6MJZyBOJsabLCtUgK-AlPD7dOg_V6MgXxMxvKFBu3v_S_gJbI2cKdZ0aBym0P21A7BaPyw9EGN3K79RdPYHjVtMvQkXi7J7cmRUv5j%3Dw86-h109-k-no!7i720!8i914!4m7!3m6!1s0x3a39431389e6973f:0x92d9c20395498468!8m2!3d17.7343219!4d83.3129841!10e5!16zL20vMDFqbXBm?entry=ttu&g_ep=EgoyMDI2MDUxMy4wIKXMDSoASAFQAw%3D%3D#">Visakhapatnam, India <i class="fas fa-external-link-alt" style="font-size:0.7rem; margin-left:4px;"></i></a></div></div>
-      <div class="contact-item"><div class="contact-icon"><i class="fa fa-envelope"></i></div><div class="contact-details"><h3>Email</h3><a href="https://mail.google.com/mail/?view=cm&fs=1&to=koushikgurrala79@gmail.com" target="_blank">koushikgurrala79@gmail.com</a></div></div>
-      <div class="contact-item"><div class="contact-icon"><i class="fab fa-linkedin-in"></i></div><div class="contact-details"><h3>LinkedIn</h3><a href="https://linkedin.com/in/koushik-gurrala-896986360/" target="_blank">Koushik Gurrala</a></div></div>
-      <div class="contact-item"><div class="contact-icon"><i class="fab fa-safari"></i></div><div class="contact-details"><h3>Portfolio</h3><a href="https://koushik79.netlify.app/" target="_blank">koushik79.netlify.app</a></div></div>
-      <div class="contact-item"><div class="contact-icon"><i class="fab fa-github"></i></div><div class="contact-details"><h3>GitHub</h3><a href="https://github.com/Koushik080" target="_blank">github.com/Koushik080</a></div></div>
-    </div>
-    <div class="contact-form-wrapper fade-in">
-      <form class="contact-form" action="https://api.web3forms.com/submit" method="POST" novalidate>
-        <input type="hidden" name="access_key" value="849e7ece-cc05-44a6-b76c-6cecad610bcf" />
-        <input type="hidden" name="subject" value="New Portfolio Message from Contact Form" />
-        <input type="hidden" name="from_name" value="Koushik Portfolio" />
-        <input type="checkbox" name="botcheck" style="display:none;" />
-        <div class="form-group"><label for="name">Your Name</label><input name="name" id="name" type="text" placeholder="John Doe" required /></div>
-        <div class="form-group"><label for="email">Your Email</label><input name="email" id="email" type="email" placeholder="john@example.com" required /></div>
-        <div class="form-group"><label for="message">Message</label><textarea name="message" id="message" placeholder="Tell me about your project or opportunity…" required></textarea></div>
-        <div id="result"></div>
-        <button type="submit" class="form-submit-btn"><i class="fas fa-paper-plane" style="margin-right:8px"></i>Send Message</button>
-      </form>
-    </div>
-  </div>
+  <div style="text-align:center"><h2 class="hero-heading fade-in" style="font-size:clamp(40px,8vw,110px);font-weight:900;text-transform:uppercase;letter-spacing:-.02em;line-height:.9;margin-bottom:32px">Let's work<br/>together</h2><p class="fade-in" style="color:#888;font-size:1rem;margin-bottom:40px">Open to DevOps, Cloud, and SRE roles. Based in Visakhapatnam, India.</p><div class="contact-info fade-in"><div class="contact-item"><div class="contact-icon"><i class="fas fa-phone"></i></div><div class="contact-details"><h3>Phone</h3><a href="tel:+917207076532">+91 7207 076 532</a></div></div><div class="contact-item"><div class="contact-icon"><i class="fas fa-location-arrow"></i></div><div class="contact-details"><h3>Location</h3><a href="https://www.google.com/maps/place/Visakhapatnam,+Andhra+Pradesh/@17.6868159,83.2184815,3a,75y,90t/data=!3m8!1e2!3m6!1sCIHM0ogKEICAgICB1uCBVg!2e10!3e12!6shttps:%2F%2Flh3.googleusercontent.com%2Fgps-cs-s%2FAPNQkAFHfjCHKo7Z1vQ9gI8D9H93BSNOeD_Occ6MJZyBOJsabLCtUgK-AlPD7dOg_V6MgXxMxvKFBu3v_S_gJbI2cKdZ0aBym0P21A7BaPyw9EGN3K79RdPYHjVtMvQkXi7J7cmRUv5j%3Dw86-h109-k-no!7i720!8i914!4m7!3m6!1s0x3a39431389e6973f:0x92d9c20395498468!8m2!3d17.7343219!4d83.3129841!10e5!16zL20vMDFqbXBm?entry=ttu&g_ep=EgoyMDI2MDUxMy4wIKXMDSoASAFQAw%3D%3D#">Visakhapatnam, India <i class="fas fa-external-link-alt" style="font-size:0.7rem; margin-left:4px;"></i></a></div></div><div class="contact-item"><div class="contact-icon"><i class="fa fa-envelope"></i></div><div class="contact-details"><h3>Email</h3><a href="https://mail.google.com/mail/?view=cm&fs=1&to=koushikgurrala79@gmail.com" target="_blank">koushikgurrala79@gmail.com</a></div></div><div class="contact-item"><div class="contact-icon"><i class="fab fa-linkedin-in"></i></div><div class="contact-details"><h3>LinkedIn</h3><a href="https://linkedin.com/in/koushik-gurrala-896986360/" target="_blank">Koushik Gurrala</a></div></div><div class="contact-item"><div class="contact-icon"><i class="fab fa-safari"></i></div><div class="contact-details"><h3>Portfolio</h3><a href="https://koushik79.netlify.app/" target="_blank">koushik79.netlify.app</a></div></div><div class="contact-item"><div class="contact-icon"><i class="fab fa-github"></i></div><div class="contact-details"><h3>GitHub</h3><a href="https://github.com/Koushik080" target="_blank">github.com/Koushik080</a></div></div></div><div class="contact-form-wrapper fade-in"><form class="contact-form" action="https://api.web3forms.com/submit" method="POST" novalidate><input type="hidden" name="access_key" value="849e7ece-cc05-44a6-b76c-6cecad610bcf" /><input type="hidden" name="subject" value="New Portfolio Message from Contact Form" /><input type="hidden" name="from_name" value="Koushik Portfolio" /><input type="checkbox" name="botcheck" style="display:none;" /><div class="form-group"><label for="name">Your Name</label><input name="name" id="name" type="text" placeholder="John Doe" required /></div><div class="form-group"><label for="email">Your Email</label><input name="email" id="email" type="email" placeholder="john@example.com" required /></div><div class="form-group"><label for="message">Message</label><textarea name="message" id="message" placeholder="Tell me about your project or opportunity…" required></textarea></div><div id="result"></div><button type="submit" class="form-submit-btn"><i class="fas fa-paper-plane" style="margin-right:8px"></i>Send Message</button></form></div></div>
 </section>
 
-<!-- NEW FOOTER: only GitHub, LinkedIn, Mail with squircle style + copyright -->
+<!-- FOOTER: exactly from second file with squircle icons + copyright -->
 <footer class="custom-footer">
   <div class="footer-squircle-wrapper">
     <a href="https://github.com/Koushik080" target="_blank" rel="noopener noreferrer" class="squircle-icon-link" aria-label="GitHub">
@@ -1076,11 +1013,80 @@ function buildIconRow(containerId, items) {
 buildIconRow('scrollInner1', row1Tech);
 buildIconRow('scrollInner2', row2Tech);
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-}, { rootMargin: '0px 0px -60px 0px', threshold: 0 });
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize Lenis smooth scroll with premium feel
+  const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true,
+    wheelMultiplier: 1,
+    touchMultiplier: 1.5,
+    infinite: false,
+  });
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.registerPlugin(ScrollTrigger);
+  ScrollTrigger.scrollerProxy(document.body, {
+    scrollTop(value) { if(arguments.length) return lenis.scrollTo(value); return lenis.scroll; },
+    getBoundingClientRect() { return {top:0, left:0, width:window.innerWidth, height:window.innerHeight}; },
+    pinType: document.body.style.transform ? 'transform' : 'fixed'
+  });
+  
+  // animate all .fade-in elements using GSAP + ScrollTrigger (hero immediate)
+  const fadeElements = document.querySelectorAll('.fade-in');
+  fadeElements.forEach(el => {
+    const isHeroRelated = el.closest('#hero') !== null;
+    if (isHeroRelated && (el.offsetTop < window.innerHeight * 0.8)) {
+      gsap.to(el, { opacity: 1, y: 0, duration: 0.9, ease: "power2.out", delay: 0.1 });
+    } else {
+      ScrollTrigger.create({
+        trigger: el,
+        start: "top 85%",
+        onEnter: () => { gsap.to(el, { opacity: 1, y: 0, duration: 0.9, ease: "power2.out", overwrite: true }); },
+        once: true
+      });
+    }
+  });
+  // service items stagger
+  gsap.utils.toArray('.service-item').forEach((item, i) => {
+    ScrollTrigger.create({
+      trigger: item,
+      start: "top 88%",
+      onEnter: () => gsap.to(item, { opacity: 1, y: 0, duration: 0.8, delay: i * 0.08, ease: "back.out(0.6)" }),
+      once: true
+    });
+  });
+  // exp highlight items
+  gsap.utils.toArray('.exp-highlight-item').forEach((item, idx) => {
+    ScrollTrigger.create({
+      trigger: item,
+      start: "top 90%",
+      onEnter: () => gsap.fromTo(item, { opacity: 0, y: 25 }, { opacity: 1, y: 0, duration: 0.6, delay: idx * 0.05, ease: "power2.out" }),
+      once: true
+    });
+  });
+  // contact cards
+  gsap.utils.toArray('.contact-item').forEach((card, i) => {
+    ScrollTrigger.create({
+      trigger: card,
+      start: "top 90%",
+      onEnter: () => gsap.to(card, { opacity: 1, y: 0, duration: 0.6, delay: i * 0.07, ease: "power2.out" }),
+      once: true
+    });
+  });
+  ScrollTrigger.refresh();
+  // loader dismiss
+  setTimeout(() => {
+    const loader = document.getElementById('pageLoader');
+    if(loader) { loader.style.opacity = '0'; setTimeout(() => { loader.style.display = 'none'; document.body.style.overflow = ''; }, 680); }
+  }, 1500);
+});
 
+// download resume
 (function() {
   const toggle = document.getElementById('downloadToggle');
   if(toggle) {
@@ -1098,6 +1104,7 @@ document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
   }
 })();
 
+// contact form handling
 (function() {
   const form = document.querySelector('.contact-form');
   if(!form) return;
@@ -1124,31 +1131,13 @@ document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
   });
 })();
 
+// nav active on scroll
 window.addEventListener('scroll', () => {
   const sections = document.querySelectorAll('section[id]');
   let current = '';
   sections.forEach(sec => { if(window.pageYOffset >= sec.offsetTop - 120) current = sec.id; });
   document.querySelectorAll('nav a[href^="#"]').forEach(a => { a.classList.toggle('nav-active', a.getAttribute('href') === '#' + current); });
 });
-
-// Page loader dismiss
-(function() {
-  document.body.style.overflow = 'hidden';
-  function dismissLoader() {
-    const loader = document.getElementById('pageLoader');
-    if (!loader) return;
-    loader.style.opacity = '0';
-    setTimeout(function() {
-      loader.style.display = 'none';
-      document.body.style.overflow = '';
-    }, 680);
-  }
-  if (document.readyState === 'complete') {
-    setTimeout(dismissLoader, 1500);
-  } else {
-    window.addEventListener('load', function() { setTimeout(dismissLoader, 1500); });
-  }
-})();
 </script>
 </body>
 </html>
