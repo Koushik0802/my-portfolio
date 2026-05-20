@@ -640,37 +640,36 @@ nav a.nav-active {
   color: #B600A8;
 }
 
-/* ---------- NEW SQUIRCLE FOOTER STYLES (only GitHub, LinkedIn, Mail) ---------- */
+/* ---------- SQUIRCLE FOOTER (reduced size, with copyright) ---------- */
 .footer-squircle-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 28px;
+  gap: 20px;
   flex-wrap: wrap;
-  margin: 0 auto;
-  width: 100%;
+  margin-bottom: 20px;
 }
 .squircle-icon-link {
   display: block;
   text-decoration: none;
-  transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
 }
 .squircle-icon-link:hover {
-  transform: translateY(-6px) scale(1.08);
+  transform: translateY(-5px) scale(1.05);
 }
 .squircle-icon {
-  width: 70px;
-  height: 70px;
+  width: 56px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #1a1a1a;
   backdrop-filter: blur(2px);
-  box-shadow: 0 12px 20px -8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
-  transition: all 0.25s ease-out;
+  box-shadow: 0 10px 16px -6px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+  transition: all 0.2s ease-out;
   cursor: pointer;
   color: white;
-  font-size: 2rem;
+  font-size: 1.7rem;
 }
 .squircle-icon.github {
   background: linear-gradient(145deg, #2c2f36, #1a1d24);
@@ -686,27 +685,38 @@ nav a.nav-active {
 }
 .squircle-icon-link:hover .squircle-icon {
   filter: brightness(1.08);
-  box-shadow: 0 18px 28px -12px rgba(0,0,0,0.5);
+  box-shadow: 0 16px 24px -10px rgba(0,0,0,0.5);
 }
-/* custom footer adjustments */
 .custom-footer {
   background: #0C0C0C;
   border-top: 1px solid #1a1a1a;
-  padding: 52px 24px 56px;
+  padding: 40px 24px 44px;
   text-align: center;
+}
+.footer-copyright {
+  font-family: 'Kanit', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.03em;
+  color: #5a5a5a;
+  margin-top: 8px;
+  text-transform: uppercase;
+  font-weight: 300;
 }
 @media (max-width: 580px) {
   .squircle-icon {
-    width: 60px;
-    height: 60px;
-    font-size: 1.8rem;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
   }
   .footer-squircle-wrapper {
-    gap: 20px;
+    gap: 18px;
+  }
+  .footer-copyright {
+    font-size: 0.65rem;
   }
 }
 
-/* keep all existing responsive overrides */
+/* keep existing responsive overrides */
 @media (max-width: 768px) {
   .hero-name {
     white-space: normal;
@@ -891,7 +901,7 @@ nav a.nav-active {
   </div>
 </div>
 
-<!-- SVG ClipPath for squircle shape (used in footer) -->
+<!-- SVG ClipPath for squircle shape -->
 <svg width="0" height="0" style="position: absolute; pointer-events: none;">
   <defs>
     <clipPath id="squircleClip" clipPathUnits="objectBoundingBox">
@@ -900,7 +910,7 @@ nav a.nav-active {
   </defs>
 </svg>
 
-<!-- HERO SECTION (unchanged) -->
+<!-- HERO SECTION -->
 <section id="hero">
   <nav class="fade-in">
     <a href="#about">About</a>
@@ -910,11 +920,9 @@ nav a.nav-active {
     <a href="#education">Education</a>
     <a href="#contact">Contact</a>
   </nav>
-
   <div class="hero-name-container fade-in" style="transition-delay:0.1s">
     <h1 class="hero-heading hero-name">Hi, i'm Koushik</h1>
   </div>
-  
   <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:32px;margin-top:auto;padding:0 24px 60px">
     <p class="fade-in" style="color:#D7E2EA;font-weight:400;text-align:center;line-height:1.7;font-size:clamp(1rem,1.6vw,1.25rem);max-width:600px;transition-delay:.35s">
       A DevOps & SRE engineer driven by building reliable, scalable, and secure cloud systems
@@ -929,12 +937,11 @@ nav a.nav-active {
   </div>
 </section>
 
-<!-- ABOUT, SKILLS, EXPERIENCE, IMPACTS, EDUCATION, CONTACT sections all remain original -->
+<!-- ABOUT, SKILLS, EXPERIENCE, IMPACTS, EDUCATION, CONTACT sections (unchanged functional content) -->
 <section class="about-section fade-in" id="about">
   <h2 class="hero-heading about-heading fade-in" style="transition-delay:0s">About me</h2>
   <p class="about-text fade-in" id="aboutText" style="transition-delay:.2s">
 With 3.8+ years of experience, I specialize in building scalable DevOps solutions on AWS using CI/CD automation, container orchestration, and infrastructure as code with Jenkins, GitHub Actions, Argo CD, and Terraform.I've reduced deployment errors by 70% and accelerated release cycles through intelligent automation and robust pipeline design. My expertise spans Kubernetes, Docker, and progressive delivery strategies like canary and blue-green deployments.<br><br>I focus on building secure, cost-efficient cloud environments powered by AI-driven monitoring using Prometheus, Grafana, and comprehensive observability stacks.</p>
-  <div style="margin-top:48px" class="fade-in"></div>
 </section>
 
 <section class="tech-scroll-section" id="skills">
@@ -1015,7 +1022,7 @@ With 3.8+ years of experience, I specialize in building scalable DevOps solution
   </div>
 </section>
 
-<!-- NEW FOOTER (only GitHub, LinkedIn, Mail, squircle style, everything else removed) -->
+<!-- NEW FOOTER: only GitHub, LinkedIn, Mail with squircle style + copyright -->
 <footer class="custom-footer">
   <div class="footer-squircle-wrapper">
     <a href="https://github.com/Koushik080" target="_blank" rel="noopener noreferrer" class="squircle-icon-link" aria-label="GitHub">
@@ -1034,6 +1041,7 @@ With 3.8+ years of experience, I specialize in building scalable DevOps solution
       </div>
     </a>
   </div>
+  <div class="footer-copyright">© 2025 Koushik Gurrala. All rights reserved.</div>
 </footer>
 
 <script>
