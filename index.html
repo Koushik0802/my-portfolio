@@ -83,27 +83,39 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
-/* GPU Isolation Layer Promotion Optimization */
+/* GPU Isolation Layer Promotion — ONLY on elements that GSAP actually animates.
+   Rule: Do NOT blanket will-change everything; it wastes GPU memory and crashes
+   mobile browsers. Promote only the specific animated targets. */
 .hero-name,
-.hero-desc,
-.hero-cta-box,
-.exp-story-card,
-.tech-scroll-icon,
-.contact-item,
-.service-item,
-.cards-grid > div {
+.hero-cta-box {
   will-change: transform, opacity;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transform: translateZ(0);
 }
 
-/* Cohesive Containment Constraints */
+/* Tech marquee tracks need their own composite layer for infinite translate loops */
+#scrollInner1,
+#scrollInner2 {
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Page loader overlay — GPU layer so fade-out never triggers layout */
+#pageLoader {
+  will-change: opacity;
+}
+
+/* Cohesive Containment Constraints — isolate each section so an internal
+   repaint / layout change does NOT re-render the rest of the page. */
 .about-section,
 .services-section,
 .projects-section,
 .tech-scroll-section,
-#contact {
+#contact,
+.exp-story-card,
+.contact-item {
   contain: layout paint;
 }
 
@@ -321,7 +333,11 @@ nav a.nav-active {
   border: 1px solid rgba(215, 226, 234, 0.1);
   border-radius: 40px;
   padding: 36px 36px 42px;
-  transition: border-color var(--speed-medium) var(--ease-premium), box-shadow var(--speed-medium) var(--ease-premium);
+  /* Rule 1: Only animate composite properties — border-color & box-shadow are paint-only
+     changes (no layout re-calc), acceptable for card hover micro-interactions.
+     NEVER animate top/left/margin/width/height on cards. */
+  transition: border-color var(--speed-medium) var(--ease-premium),
+              box-shadow var(--speed-medium) var(--ease-premium);
 }
 .exp-story-card:hover {
   border-color: rgba(182, 0, 168, 0.4);
@@ -635,9 +651,11 @@ nav a.nav-active {
 .squircle-icon-link {
   display: block;
   text-decoration: none;
+  /* Rule 1: translateY + scale are pure composite (GPU) transforms — correct. */
   transition: transform var(--speed-fast) cubic-bezier(0.2, 0.9, 0.4, 1.1);
 }
 .squircle-icon-link:hover {
+  /* Rule 1: Using transform instead of top/margin — never triggers layout. */
   transform: translateY(-5px) scale(1.05);
 }
 .squircle-icon {
@@ -749,6 +767,9 @@ nav a.nav-active {
 }
 
 /* Page Loader Engine Core Layout */
+/* Rule 1 + 2: Fade out using opacity only (composite property).
+   transform: translateZ(0) promotes to its own GPU layer immediately so
+   the fade never blocks or triggers layout on the main thread. */
 #pageLoader {
   position: fixed;
   inset: 0;
@@ -758,6 +779,7 @@ nav a.nav-active {
   align-items: center;
   justify-content: center;
   opacity: 1;
+  transform: translateZ(0);
   transition: opacity 0.65s var(--ease-premium);
 }
 #pageLoader .main {
@@ -1189,22 +1211,34 @@ document.addEventListener('DOMContentLoaded', function() {
   try {
     gsap.registerPlugin(ScrollTrigger);
 
-    /* 1. SCRIPT ENHANCEMENT: INTEGRATE RIGID LENIS + GSAP RAF TICKER SYNCHRONIZATION */
+    /* 1. LENIS SMOOTH SCROLL — Rule 3 "Extreme" Smooth Scrolling.
+       Lenis replaces scroll-behavior:smooth entirely. It synchronizes with
+       GSAP's rAF ticker so every scroll frame fires in perfect cadence with
+       the display refresh rate (120 Hz / 60 Hz adaptive).
+       smoothTouch: false — Lenis on touch fires its own rAF loop which can
+       compete with native momentum; leave native touch scrolling alone. */
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Expo Out curve
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      smoothTouch: false,
+      smoothTouch: false,   // Rule 3: avoid heavy scroll override on mobile
       wheelMultiplier: 1.0
     });
 
+    // Synchronise Lenis scroll position with ScrollTrigger each frame.
     lenis.on('scroll', ScrollTrigger.update);
 
+    /* Rule 5 — requestAnimationFrame (rAF) Integration:
+       gsap.ticker.add() fires exactly once per screen-refresh cycle,
+       perfectly equivalent to requestAnimationFrame(). Never use
+       setInterval / setTimeout for animation loops. */
     gsap.ticker.add((time) => {
       lenis.raf(time * 1000);
     });
+    // lagSmoothing(0) prevents GSAP from inserting fake frames when the
+    // tab regains focus after being hidden — keeps timeline timing exact.
     gsap.ticker.lagSmoothing(0);
 
     /* 2. SCRIPT ENHANCEMENT: VELOCITY-AWARE MULTI-DIRECTIONAL GSAP MARQUEE PATTERN */
@@ -1381,18 +1415,38 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
 
-    // Handle Active State Tracker Synchronization
-    lenis.on('scroll', () => {
-      const activeSections = document.querySelectorAll('section[id]');
+    /* Handle Active State Tracker Synchronization.
+       Rule 5 — Debounce Scroll Events:
+       Mobile devices fire hundreds of scroll events per second. Attaching
+       an expensive DOM-querying function directly to a scroll listener will
+       freeze the page. We gate execution with requestAnimationFrame so it
+       runs AT MOST once per display-refresh cycle, not hundreds of times. */
+    const navLinks = document.querySelectorAll('nav a');
+    const sectionsWithId = Array.from(document.querySelectorAll('section[id]'));
+    let rafPending = false;
+
+    function updateActiveNav() {
+      const scrollY = lenis.scroll;
       let currentSelectionId = '';
-      activeSections.forEach(item => {
-        if (lenis.scroll >= item.offsetTop - 180) {
-          currentSelectionId = item.id;
+      // Reading offsetTop here is safe — we are already inside rAF so the
+      // browser has finished its layout pass before this callback runs.
+      for (let i = 0; i < sectionsWithId.length; i++) {
+        if (scrollY >= sectionsWithId[i].offsetTop - 180) {
+          currentSelectionId = sectionsWithId[i].id;
         }
-      });
-      document.querySelectorAll('nav a').forEach(link => {
+      }
+      navLinks.forEach(link => {
         link.classList.toggle('nav-active', link.getAttribute('href') === '#' + currentSelectionId);
       });
+      rafPending = false;
+    }
+
+    lenis.on('scroll', () => {
+      // Guard: only queue one rAF per frame, drop extra scroll events.
+      if (!rafPending) {
+        rafPending = true;
+        requestAnimationFrame(updateActiveNav);
+      }
     });
 
     // Initialize Global Layout Lifecycle Execution Refreshes
