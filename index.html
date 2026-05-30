@@ -333,9 +333,6 @@ nav a.nav-active {
   border: 1px solid rgba(215, 226, 234, 0.1);
   border-radius: 40px;
   padding: 36px 36px 42px;
-  /* Rule 1: Only animate composite properties — border-color & box-shadow are paint-only
-     changes (no layout re-calc), acceptable for card hover micro-interactions.
-     NEVER animate top/left/margin/width/height on cards. */
   transition: border-color var(--speed-medium) var(--ease-premium),
               box-shadow var(--speed-medium) var(--ease-premium);
 }
@@ -651,11 +648,9 @@ nav a.nav-active {
 .squircle-icon-link {
   display: block;
   text-decoration: none;
-  /* Rule 1: translateY + scale are pure composite (GPU) transforms — correct. */
   transition: transform var(--speed-fast) cubic-bezier(0.2, 0.9, 0.4, 1.1);
 }
 .squircle-icon-link:hover {
-  /* Rule 1: Using transform instead of top/margin — never triggers layout. */
   transform: translateY(-5px) scale(1.05);
 }
 .squircle-icon {
@@ -767,9 +762,6 @@ nav a.nav-active {
 }
 
 /* Page Loader Engine Core Layout */
-/* Rule 1 + 2: Fade out using opacity only (composite property).
-   transform: translateZ(0) promotes to its own GPU layer immediately so
-   the fade never blocks or triggers layout on the main thread. */
 #pageLoader {
   position: fixed;
   inset: 0;
@@ -826,7 +818,8 @@ nav a.nav-active {
 }
 #pageLoader .loaderA {
   position: absolute;
-  width: 1.15em; height: 13em;
+  width: 1.15em;
+  height: 13em;
   border-radius: 50px;
   background: transparent;
 }
@@ -877,6 +870,112 @@ nav a.nav-active {
   0%   { transform: translateY(0em); }
   50%  { transform: translateY(12em); }
   100% { transform: translateY(0em); }
+}
+
+/* ==========================================================================
+   SCROLL STACK — KEY IMPACTS (PERFORMANCE FIXED)
+   ========================================================================== */
+#key-impacts {
+  contain: none !important;
+  overflow: visible;
+}
+
+.kp-stack-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  padding-bottom: 60vh;
+}
+
+.kp-stack-inner {
+  position: relative;
+}
+
+/* FIXED: Pre-promote GPU layers and remove will-change/filters */
+.kp-card {
+  background: var(--bg-dark-elevated);
+  border: 1px solid rgba(215, 226, 234, 0.08);
+  border-radius: 40px;
+  padding: 44px 48px;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 220px;
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+  transform-origin: top center;
+  backface-visibility: hidden;
+  transform: translate3d(0,0,0);   /* GPU layer pre-promotion */
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.25);
+  position: relative;
+  transition: border-color var(--speed-medium) var(--ease-premium),
+              box-shadow var(--speed-medium) var(--ease-premium);
+}
+.kp-card:hover {
+  border-color: rgba(182, 0, 168, 0.35);
+  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.55);
+}
+
+.kp-card-num {
+  font-size: clamp(52px, 8vw, 100px);
+  font-weight: 900;
+  color: var(--color-accent);
+  line-height: 1;
+  flex-shrink: 0;
+  width: clamp(80px, 11vw, 130px);
+  opacity: 0.85;
+  font-family: 'Kanit', sans-serif;
+}
+
+.kp-card-body {
+  flex: 1;
+  padding-top: 8px;
+}
+
+.kp-card-title {
+  font-size: clamp(1.1rem, 2vw, 1.7rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+  margin-bottom: 12px;
+}
+
+.kp-card-desc {
+  font-size: clamp(0.85rem, 1.2vw, 1.05rem);
+  font-weight: 300;
+  color: var(--color-text-primary);
+  opacity: 0.65;
+  line-height: 1.65;
+  max-width: 560px;
+}
+
+.kp-card-icon {
+  font-size: 1.6rem;
+  color: var(--color-accent);
+  opacity: 0.7;
+  margin-bottom: 14px;
+}
+
+.kp-stack-end {
+  width: 100%;
+  height: 1px;
+}
+
+@media (max-width: 640px) {
+  .kp-card {
+    flex-direction: column;
+    gap: 12px;
+    padding: 28px 24px;
+    min-height: auto;
+  }
+  .kp-card-num {
+    width: auto;
+    font-size: 48px;
+  }
+  .kp-stack-wrapper {
+    padding-bottom: 40vh;
+  }
 }
 
 /* ==========================================================================
@@ -1039,48 +1138,64 @@ nav a.nav-active {
   <div class="hero-mask">
     <h2 class="services-heading">Key Impacts</h2>
   </div>
-  <div style="max-width:900px;margin:0 auto">
-    <div class="service-item">
-      <div class="service-num">01</div>
-      <div class="service-content">
-        <div class="service-name">99.99% Uptime</div>
-        <div class="service-desc">Engineered fault-tolerant architectures with zero-downtime upgrades and 60% reliability improvement.</div>
+  <div class="kp-stack-wrapper">
+    <div class="kp-stack-inner" id="kpStackInner">
+
+      <div class="kp-card">
+        <div class="kp-card-num">01</div>
+        <div class="kp-card-body">
+          <div class="kp-card-icon"><i class="fas fa-signal"></i></div>
+          <div class="kp-card-title">99.99% Uptime</div>
+          <div class="kp-card-desc">Engineered fault-tolerant architectures on AWS with zero-downtime upgrades, automated failover, and a 60% improvement in overall system reliability through intelligent health checks and redundant infrastructure design.</div>
+        </div>
       </div>
-    </div>
-    <div class="service-item">
-      <div class="service-num">02</div>
-      <div class="service-content">
-        <div class="service-name">10x Faster Deployments</div>
-        <div class="service-desc">Automated CI/CD flows, reduced deployment time by 40% and manual errors by 70%.</div>
+
+      <div class="kp-card">
+        <div class="kp-card-num">02</div>
+        <div class="kp-card-body">
+          <div class="kp-card-icon"><i class="fas fa-rocket"></i></div>
+          <div class="kp-card-title">10× Faster Deployments</div>
+          <div class="kp-card-desc">Automated end-to-end CI/CD workflows using n8n, Jenkins, and ArgoCD — cutting deployment time by 40% and manual errors by 70%. What used to take days now ships in minutes with full traceability.</div>
+        </div>
       </div>
-    </div>
-    <div class="service-item">
-      <div class="service-num">03</div>
-      <div class="service-content">
-        <div class="service-name">Kubernetes & GitOps</div>
-        <div class="service-desc">Canary/blue-green rollouts with Argo Rollouts, reducing rollback time by 60%.</div>
+
+      <div class="kp-card">
+        <div class="kp-card-num">03</div>
+        <div class="kp-card-body">
+          <div class="kp-card-icon"><i class="fas fa-dharmachakra"></i></div>
+          <div class="kp-card-title">Kubernetes &amp; GitOps</div>
+          <div class="kp-card-desc">Migrated production workloads to GitOps with Argo CD on AWS EKS. Implemented canary and blue-green delivery strategies via Argo Rollouts, slashing rollback times by 60% and enabling risk-free progressive releases.</div>
+        </div>
       </div>
-    </div>
-    <div class="service-item">
-      <div class="service-num">04</div>
-      <div class="service-content">
-        <div class="service-name">Cost Optimisation</div>
-        <div class="service-desc">Lambda-based automation saved money, reduced manual effort by 40%.</div>
+
+      <div class="kp-card">
+        <div class="kp-card-num">04</div>
+        <div class="kp-card-body">
+          <div class="kp-card-icon"><i class="fas fa-coins"></i></div>
+          <div class="kp-card-title">Cost Optimisation</div>
+          <div class="kp-card-desc">Built Lambda-based automation to right-size resources and schedule non-prod shutdowns — delivering measurable cloud spend savings while reducing manual toil by 40%, freeing the team to focus on higher-value engineering work.</div>
+        </div>
       </div>
-    </div>
-    <div class="service-item">
-      <div class="service-num">05</div>
-      <div class="service-content">
-        <div class="service-name">Security First</div>
-        <div class="service-desc">Distroless containers + least-privilege IAM, DevSecOps aligned image scanning.</div>
+
+      <div class="kp-card">
+        <div class="kp-card-num">05</div>
+        <div class="kp-card-body">
+          <div class="kp-card-icon"><i class="fas fa-shield-alt"></i></div>
+          <div class="kp-card-title">Security First</div>
+          <div class="kp-card-desc">Introduced distroless Docker images and Trivy vulnerability scanning into every pipeline stage. Combined with least-privilege IAM policies and DevSecOps tooling, attack surfaces were dramatically reduced across all production workloads.</div>
+        </div>
       </div>
-    </div>
-    <div class="service-item">
-      <div class="service-num">06</div>
-      <div class="service-content">
-        <div class="service-name">Monitoring & Observability</div>
-        <div class="service-desc">Prometheus/Grafana/EFK stack delivering real-time insights and 60% reliability gain.</div>
+
+      <div class="kp-card">
+        <div class="kp-card-num">06</div>
+        <div class="kp-card-body">
+          <div class="kp-card-icon"><i class="fas fa-chart-line"></i></div>
+          <div class="kp-card-title">Monitoring &amp; Observability</div>
+          <div class="kp-card-desc">Deployed a full Prometheus + Grafana + EFK observability stack, delivering real-time dashboards, structured log aggregation, and proactive alerting. Achieved a 60% reliability gain and near-instant incident detection across distributed services.</div>
+        </div>
       </div>
+
+      <div class="kp-stack-end"></div>
     </div>
   </div>
 </section>
@@ -1211,37 +1326,25 @@ document.addEventListener('DOMContentLoaded', function() {
   try {
     gsap.registerPlugin(ScrollTrigger);
 
-    /* 1. LENIS SMOOTH SCROLL — Rule 3 "Extreme" Smooth Scrolling.
-       Lenis replaces scroll-behavior:smooth entirely. It synchronizes with
-       GSAP's rAF ticker so every scroll frame fires in perfect cadence with
-       the display refresh rate (120 Hz / 60 Hz adaptive).
-       smoothTouch: false — Lenis on touch fires its own rAF loop which can
-       compete with native momentum; leave native touch scrolling alone. */
+    /* 1. LENIS SMOOTH SCROLL */
     const lenis = new Lenis({
       duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Expo Out curve
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      smoothTouch: false,   // Rule 3: avoid heavy scroll override on mobile
+      smoothTouch: false,
       wheelMultiplier: 1.0
     });
 
-    // Synchronise Lenis scroll position with ScrollTrigger each frame.
     lenis.on('scroll', ScrollTrigger.update);
 
-    /* Rule 5 — requestAnimationFrame (rAF) Integration:
-       gsap.ticker.add() fires exactly once per screen-refresh cycle,
-       perfectly equivalent to requestAnimationFrame(). Never use
-       setInterval / setTimeout for animation loops. */
     gsap.ticker.add((time) => {
       lenis.raf(time * 1000);
     });
-    // lagSmoothing(0) prevents GSAP from inserting fake frames when the
-    // tab regains focus after being hidden — keeps timeline timing exact.
     gsap.ticker.lagSmoothing(0);
 
-    /* 2. SCRIPT ENHANCEMENT: VELOCITY-AWARE MULTI-DIRECTIONAL GSAP MARQUEE PATTERN */
+    /* 2. VELOCITY-AWARE MARQUEE */
     function initVelocityMarquees() {
       const configurations = [
         { id: '#scrollInner1', direction: -1 },
@@ -1252,11 +1355,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const track = document.querySelector(config.id);
         if (!track) return;
         
-        // Dynamic length configuration to support calculations
         const sets = track.querySelectorAll('.marquee-set');
         const setWidth = sets[0].offsetWidth;
         
-        // Position elements cleanly side-by-side
         gsap.set(track, { display: 'flex', width: setWidth * 2 });
         
         const loopTranslation = setWidth * config.direction;
@@ -1278,7 +1379,6 @@ document.addEventListener('DOMContentLoaded', function() {
           }
         });
 
-        // Dynamic Velocity Tracking & Feedback Hook
         ScrollTrigger.create({
           trigger: track,
           start: "top bottom",
@@ -1286,11 +1386,8 @@ document.addEventListener('DOMContentLoaded', function() {
           onUpdate: (self) => {
             const currentVelocity = self.getVelocity();
             const absoluteVelocity = Math.abs(currentVelocity);
-            
-            // Generate proportional, responsive scaling vectors
             const targetedTimeScale = Math.min(1 + absoluteVelocity * 0.005, 4.5);
             const dynamicSkew = gsap.utils.clamp(-12, 12, (currentVelocity * 0.002) * config.direction);
-            
             gsap.to(continuousTimeline, { timeScale: targetedTimeScale, duration: 0.35, ease: "power1.out" });
             gsap.to(track, { skewX: dynamicSkew, duration: 0.4, ease: "power2.out", overwrite: "auto" });
           },
@@ -1300,7 +1397,6 @@ document.addEventListener('DOMContentLoaded', function() {
           onEnter: () => normalizeMarqueeLoop(continuousTimeline, track)
         });
 
-        // Hover Interactive Modulators
         track.addEventListener('mouseenter', () => {
           gsap.to(continuousTimeline, { timeScale: 0.15, duration: 0.6, ease: "power2.out" });
         });
@@ -1317,7 +1413,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     initVelocityMarquees();
 
-    /* 3. SCRIPT ENHANCEMENT: INITIAL REVEAL NARRATIVE (PREMIUM CINEMATIC TIMELINE) */
+    /* 3. INITIAL CINEMATIC REVEAL */
     const initialCinematicTimeline = gsap.timeline({
       defaults: { ease: "var(--ease-premium)" }
     });
@@ -1338,7 +1434,7 @@ document.addEventListener('DOMContentLoaded', function() {
       "0.7"
     );
 
-    /* 4. SCRIPT ENHANCEMENT: DYNAMIC SCROLL VELOCITY PARALLAX DRIVER FOR HERO */
+    /* 4. HERO PARALLAX */
     gsap.to("#hero .hero-name", {
       scrollTrigger: {
         trigger: "#hero",
@@ -1352,10 +1448,9 @@ document.addEventListener('DOMContentLoaded', function() {
       ease: "none"
     });
 
-    /* 5. SCRIPT ENHANCEMENT: COORDINATED CHOREOGRAPHY SYSTEM (CONTINUOUS VISUAL FLOW) */
+    /* 5. SECTION REVEALS */
     const architecturalSections = document.querySelectorAll("section:not(#hero)");
     architecturalSections.forEach(section => {
-      
       const targetedHeading = section.querySelector(".hero-heading, .services-heading");
       const collectiveElements = section.querySelectorAll(".fade-in, .service-item, .exp-story-card, .cards-grid > div, .contact-item");
 
@@ -1383,7 +1478,6 @@ document.addEventListener('DOMContentLoaded', function() {
         );
       }
 
-      // Specialized Child Animation Orchestration Loops
       if (section.id === "experience") {
         const structuralItems = section.querySelectorAll(".exp-highlight-item");
         if (structuralItems.length > 0) {
@@ -1403,7 +1497,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
 
-    // Native Architectural Anchor Interceptor
+    /* NATIVE ANCHOR SCROLL */
     document.querySelectorAll('nav a, #heroHireBtn').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
         e.preventDefault();
@@ -1415,12 +1509,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
 
-    /* Handle Active State Tracker Synchronization.
-       Rule 5 — Debounce Scroll Events:
-       Mobile devices fire hundreds of scroll events per second. Attaching
-       an expensive DOM-querying function directly to a scroll listener will
-       freeze the page. We gate execution with requestAnimationFrame so it
-       runs AT MOST once per display-refresh cycle, not hundreds of times. */
+    /* ACTIVE NAV STATE (throttled via rAF) */
     const navLinks = document.querySelectorAll('nav a');
     const sectionsWithId = Array.from(document.querySelectorAll('section[id]'));
     let rafPending = false;
@@ -1428,8 +1517,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateActiveNav() {
       const scrollY = lenis.scroll;
       let currentSelectionId = '';
-      // Reading offsetTop here is safe — we are already inside rAF so the
-      // browser has finished its layout pass before this callback runs.
       for (let i = 0; i < sectionsWithId.length; i++) {
         if (scrollY >= sectionsWithId[i].offsetTop - 180) {
           currentSelectionId = sectionsWithId[i].id;
@@ -1442,17 +1529,111 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     lenis.on('scroll', () => {
-      // Guard: only queue one rAF per frame, drop extra scroll events.
       if (!rafPending) {
         rafPending = true;
         requestAnimationFrame(updateActiveNav);
       }
     });
 
-    // Initialize Global Layout Lifecycle Execution Refreshes
+    /* ================================================================
+       SCROLL STACK — KEY IMPACTS (PERFORMANCE OPTIMISED)
+       ================================================================ */
+    (function initScrollStack() {
+      const cards = Array.from(document.querySelectorAll('#kpStackInner .kp-card'));
+      if (!cards.length) return;
+
+      const ITEM_DISTANCE   = 120;
+      const ITEM_SCALE      = 0.035;
+      const ITEM_STACK_DIST = 28;
+      const STACK_POSITION  = 0.18;
+      const SCALE_END_POS   = 0.08;
+      const BASE_SCALE      = 0.82;
+      const OPACITY_DEPTH   = 0.08;
+
+      cards.forEach((card, i) => {
+        if (i < cards.length - 1) card.style.marginBottom = ITEM_DISTANCE + 'px';
+        card.style.transformOrigin = 'top center';
+      });
+
+      const endEl = document.querySelector('#kpStackInner .kp-stack-end');
+      let cardTops = [];
+      let endTop   = 0;
+
+      function cacheOffsets() {
+        cardTops = cards.map(c => c.getBoundingClientRect().top + window.scrollY);
+        endTop   = endEl ? endEl.getBoundingClientRect().top + window.scrollY : 0;
+      }
+      cacheOffsets();
+      window.addEventListener('resize', cacheOffsets, { passive: true });
+
+      function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+      function lerp(a, b, t) { return a + (b - a) * t; }
+
+      const prevValues = cards.map(() => ({ transform: '', opacity: '' }));
+
+      // Direct update without extra RAF — scroll event calls this immediately
+      function updateStack() {
+        const scrollTop = lenis.scroll;        // FIX 3: use lenis.scroll instead of window.scrollY
+        const vh        = window.innerHeight;
+        const stackPx   = STACK_POSITION * vh;
+        const scalePx   = SCALE_END_POS  * vh;
+        const pinEnd    = endTop - vh / 2;
+
+        let topPinnedIdx = -1;
+        cards.forEach((_, i) => {
+          const pinStart = cardTops[i] - stackPx - ITEM_STACK_DIST * i;
+          if (scrollTop >= pinStart && scrollTop <= pinEnd) topPinnedIdx = i;
+        });
+
+        cards.forEach((card, i) => {
+          const top      = cardTops[i];
+          const pinStart = top - stackPx - ITEM_STACK_DIST * i;
+          const trigEnd  = top - scalePx;
+
+          const scaleP      = clamp01((scrollTop - pinStart) / (trigEnd - pinStart));
+          const targetScale = BASE_SCALE + i * ITEM_SCALE;
+          const scale       = lerp(1, targetScale, scaleP);
+          const scaleFixed  = scale.toFixed(3);
+
+          let ty = 0;
+          if (scrollTop >= pinStart && scrollTop <= pinEnd) {
+            ty = scrollTop - top + stackPx + ITEM_STACK_DIST * i;
+          } else if (scrollTop > pinEnd) {
+            ty = pinEnd - top + stackPx + ITEM_STACK_DIST * i;
+          }
+          const tyFixed = ty.toFixed(1);
+
+          const depthBelow = topPinnedIdx > i ? topPinnedIdx - i : 0;
+          const opacity    = Math.max(0.35, 1 - depthBelow * OPACITY_DEPTH);
+          const opacityFixed = opacity < 1 ? opacity.toFixed(3) : '';
+
+          const newTransform = `translate3d(0,${tyFixed}px,0) scale(${scaleFixed})`;
+          const newOpacity = opacityFixed;
+
+          const prev = prevValues[i];
+          if (prev.transform !== newTransform) {
+            card.style.transform = newTransform;
+            prev.transform = newTransform;
+          }
+          if (prev.opacity !== newOpacity) {
+            card.style.opacity = newOpacity;
+            prev.opacity = newOpacity;
+          }
+        });
+      }
+
+      // FIX 1: call updateStack directly on scroll (no extra RAF queuing)
+      lenis.on('scroll', updateStack);
+      // also run on resize to keep offsets fresh (already handled via cacheOffsets + update)
+      window.addEventListener('resize', () => {
+        cacheOffsets();
+        updateStack();
+      });
+      updateStack(); // initial paint
+    })();
+
     ScrollTrigger.refresh();
 
-    // Elegant Page Dismiss Lifecycle Execution Loop
     setTimeout(() => {
       const structuralLoader = document.getElementById('pageLoader');
       if(structuralLoader) {
@@ -1477,7 +1658,7 @@ function dismissLoaderImmediate() {
   }
 }
 
-// Download Resume Automation Component
+// Download Resume
 (function() {
   const toggle = document.getElementById('downloadToggle');
   if(toggle) {
@@ -1495,7 +1676,7 @@ function dismissLoaderImmediate() {
   }
 })();
 
-// Modernized Form Processing Control Loop
+// Form handler
 (function() {
   const form = document.querySelector('.contact-form');
   if(!form) return;
